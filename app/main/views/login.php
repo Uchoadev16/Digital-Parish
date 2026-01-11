@@ -44,24 +44,14 @@
       .input-field:focus {
         box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.2);
       }
-      .feature-icon {
-        transition: all 0.3s ease;
-      }
-      .feature-item:hover .feature-icon {
-        transform: scale(1.1);
-        background: #d4a574;
-      }
-      .feature-item:hover .feature-icon svg {
-        color: white;
-      }
     </style>
   </head>
   
   <body class="min-h-screen font-sans bg-warm-gray">
     <div class="min-h-screen flex flex-col lg:flex-row">
       
-      <div class="hidden lg:flex lg:w-1/2 bg-primary p-8 lg:p-16 flex-col items-center justify-center relative overflow-hidden">
-          <div class="absolute inset-0 opacity-5">
+      <div class="hidden lg:flex lg:w-1/2 bg-primary p-12 lg:p-16 flex-col items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 opacity-5">
           <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M30 0L35 10H25L30 0ZM30 60L25 50H35L30 60ZM0 30L10 25V35L0 30ZM60 30L50 35V25L60 30Z\' fill=\'%23d4a574\'/%3E%3C/svg%3E'); background-size: 60px 60px;"></div>
         </div>
 
@@ -74,61 +64,49 @@
           </svg>
         </div>
         
-        <div class="relative z-10 max-w-lg text-center">
-          <div class="flex items-center justify-center gap-3 mb-12">
-            <div class="w-14 h-14 rounded-xl bg-accent/20 border border-accent/30 flex items-center justify-center">
-              <svg class="w-8 h-8 text-accent" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2L13.09 8.26L19 7L14.74 11.27L21 12L14.74 12.73L19 17L13.09 15.74L12 22L10.91 15.74L5 17L9.26 12.73L3 12L9.26 11.27L5 7L10.91 8.26L12 2Z"/>
-              </svg>
-            </div>
-            <div class="text-left">
-              <span class="text-2xl font-bold text-white tracking-wider block">DIGITAL</span>
-              <span class="text-sm text-accent tracking-widest">PARISH</span>
-            </div>
+        <div class="absolute top-12 left-16 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-accent/20 border border-accent/30 flex items-center justify-center">
+            <svg class="w-6 h-6 text-accent" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2L13.09 8.26L19 7L14.74 11.27L21 12L14.74 12.73L19 17L13.09 15.74L12 22L10.91 15.74L5 17L9.26 12.73L3 12L9.26 11.27L5 7L10.91 8.26L12 2Z"/>
+            </svg>
           </div>
-
-          <div class="mb-12">
-            <h1 class="text-4xl lg:text-5xl font-serif text-white mb-6 leading-tight">
-              Gerencie sua
-              <span class="text-accent"> paróquia </span>
-              com simplicidade
-            </h1>
-            <p class="text-white/60 text-lg">
-              Sistema integrado para administração de missas, eventos e comunidades católicas.
-            </p>
-          </div>
-
-          <div class="space-y-4 inline-block text-left">
-            <div class="feature-item flex items-center gap-4 group cursor-default">
-              <div class="feature-icon w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center">
-                <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                </svg>
-              </div>
-              <span class="text-white/80">Agenda de missas e eventos</span>
-            </div>
-            <div class="feature-item flex items-center gap-4 group cursor-default">
-              <div class="feature-icon w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center">
-                <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
-                </svg>
-              </div>
-              <span class="text-white/80">Gestão de comunidades</span>
-            </div>
-            <div class="feature-item flex items-center gap-4 group cursor-default">
-              <div class="feature-icon w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center">
-                <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                </svg>
-              </div>
-              <span class="text-white/80">Relatórios e estatísticas</span>
-            </div>
-          </div>
-
-          <div class="mt-12">
-            <p class="text-white/40 text-sm">© 2026 Digital Parish. Todos os direitos reservados.</p>
+          <div>
+            <span class="text-lg font-bold text-white tracking-wider block">DIGITAL</span>
+            <span class="text-xs text-accent tracking-widest">PARISH</span>
           </div>
         </div>
+
+        <div class="max-w-lg text-center">
+          <h1 class="text-4xl lg:text-5xl font-serif font-bold text-white mb-6 leading-snug">
+            Gerencie sua <span class="text-accent">paróquia</span> com simplicidade
+          </h1>
+          <p class="text-white/50 text-lg mb-10">
+            Sistema integrado para administração de missas, eventos e comunidades católicas.
+          </p>
+
+          <div class="flex justify-center gap-6 text-white/60 text-sm">
+            <span class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+              </svg>
+              Agenda de missas
+            </span>
+            <span class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+              </svg>
+              Gestão de fiéis
+            </span>
+            <span class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+              </svg>
+              Relatórios
+            </span>
+          </div>
+        </div>
+
+        <p class="absolute bottom-12 text-white/30 text-sm">© 2026 Digital Parish</p>
 
         <div class="absolute bottom-0 left-0 w-48 h-48 opacity-10">
           <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -151,12 +129,12 @@
             </div>
           </div>
 
-          <div class="text-center mb-8">
-            <h2 class="text-3xl font-serif font-semibold text-white lg:text-primary mb-2">Bem-vindo de volta</h2>
-            <p class="text-white/60 lg:text-primary/60">Acesse sua conta para continuar</p>
-          </div>
-
           <div class="bg-white rounded-2xl p-8 golden-glow border border-accent/10">
+            <div class="text-center mb-8">
+              <h2 class="text-3xl font-serif font-semibold text-primary mb-2">Bem-vindo</h2>
+              <p class="text-primary/50">Acesse sua conta para continuar</p>
+            </div>
+
             <form method="POST" action="" class="space-y-5">
               <div class="space-y-2">
                 <label for="email" class="block text-sm font-medium text-primary">E-mail</label>
@@ -212,7 +190,7 @@
                   <input type="checkbox" name="lembrar" class="w-4 h-4 rounded border-gray-300 text-accent focus:ring-accent accent-accent">
                   <span class="group-hover:text-primary transition-colors">Manter conectado</span>
                 </label>
-                <a href="#" class="text-accent-dark hover:text-accent transition-colors font-medium text-sm">Esqueceu a senha?</a>
+                <a href="./esquecer_senha.php" class="text-accent-dark hover:text-accent transition-colors font-medium">Esqueceu?</a>
               </div>
 
               <button type="submit" class="btn-primary w-full text-white py-3.5 rounded-xl font-semibold active:scale-[0.98]">
@@ -229,12 +207,9 @@
               </div>
             </div>
 
-            <div class="text-center">
-              <p class="text-sm text-primary/60 mb-3">Primeira vez por aqui?</p>
-              <button onclick="window.location.href='primeiro_acesso.php'" type="button" class="w-full border-2 border-accent text-primary py-3 rounded-xl font-semibold hover:bg-accent hover:text-white transition-all duration-300">
-                Criar minha conta
-              </button>
-            </div>
+            <button onclick="window.location.href='primeiro_acesso.php'" type="button" class="w-full border-2 border-accent text-primary py-3 rounded-xl font-semibold hover:bg-accent hover:text-white transition-all duration-300">
+              Criar minha conta
+            </button>
           </div>
 
           <div class="text-center mt-6">
