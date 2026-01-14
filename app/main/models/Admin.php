@@ -160,3 +160,4 @@ class Admin extends Sessions
     public function getPermissions() { return $this->permissions; }
 }
 
+
