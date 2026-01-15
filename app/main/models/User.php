@@ -21,14 +21,15 @@ class User extends SelectMain
         try {
             $stmt_check = $this->connection->prepare(
                 "SELECT * FROM {$this->tables['users']} 
-                WHERE senha IS NULL AND email = :email AND cpf = :cpf");
+                WHERE senha IS NULL AND email = :email AND cpf = :cpf"
+            );
 
             $stmt_check->bindParam(":email", $email);
             $stmt_check->bindParam(":cpf", $cpf);
             if (!$stmt_check->execute()) {
                 return 2;
             }
-            
+
             if ($stmt_check->rowCount() === 0) {
                 return 3;
             }
@@ -47,7 +48,7 @@ class User extends SelectMain
     public function PrimeiroAcesso(string $cpf, string $email, string $senha): int
     {
         try {
-            $stmt_check = $this->connection->prepare("SELECT * FROM {$this->tables['users']} WHERE email = :email AND cpf = :cpf AND senha = NULL");
+            $stmt_check = $this->connection->prepare("SELECT * FROM {$this->tables['users']} WHERE senha IS NULL AND email = :email AND cpf = :cpf");
             $stmt_check->bindParam(":email", $email);
             $stmt_check->bindParam(":cpf", $cpf);
             if (!$stmt_check->execute()) {
@@ -60,9 +61,10 @@ class User extends SelectMain
 
             $hash = password_hash($senha, PASSWORD_DEFAULT);
             $stmt_cadastrar = $this->connection->prepare("UPDATE {$this->tables['users']} SET senha = :senha WHERE email = :email AND cpf = :cpf");
-            $stmt_check->bindParam(":email", $email);
-            $stmt_check->bindParam(":cpf", $cpf);
-            if (!$stmt_check->execute()) {
+            $stmt_cadastrar->bindParam(":senha", $hash);
+            $stmt_cadastrar->bindParam(":email", $email);
+            $stmt_cadastrar->bindParam(":cpf", $cpf);
+            if (!$stmt_cadastrar->execute()) {
                 return 2;
             }
 
@@ -71,39 +73,45 @@ class User extends SelectMain
             return 0;
         }
     }
-    public function login(string $email, string $senha)
+    public function login(string $email, string $senha): int
     {
         try {
             $stmt_check = $this->connection->prepare(
                 "SELECT u.*, p.*, pe.*, com.* FROM {$this->tables['users']} u
-            INNER JOIN {$this->tables['pari']} p ON u.fk_paroquias_id = p.id
-            INNER JOIN {$this->tables['prof']} p ON u.fk_perfis_id = pe.id
-            INNER JOIN {$this->tables['comm']} p ON u.fk_comunidades_id = com.id
+            INNER JOIN {$this->tables['pari']} p ON p.id = u.fk_paroquias_id
+            INNER JOIN {$this->tables['prof']} pe ON pe.id = u.fk_perfis_id
+            INNER JOIN {$this->tables['comm']} com ON com.id = u.fk_comunidades_id
             WHERE email = :email
             "
             );
             $stmt_check->bindParam(":email", $email);
-            if (! $stmt_check->execute()) {
-                return 2;
-            }
+            $stmt_check->execute();
             $user = $stmt_check->fetch(PDO::FETCH_ASSOC);
 
-            if ($stmt_check->rowCount() > 0) {
+            if (!$user) {
+                $stmt_check = $this->connection->prepare(
+                    "SELECT u.*, p.*, pe.* FROM {$this->tables['users']} u
+                INNER JOIN {$this->tables['pari']} p ON p.id = u.fk_paroquias_id
+                INNER JOIN {$this->tables['prof']} pe ON pe.id = u.fk_perfis_id
+                WHERE email = :email");
+                $stmt_check->bindParam(":email", $email);
+                $stmt_check->execute();
+                $user = $stmt_check->fetch(PDO::FETCH_ASSOC);
+            }
+            if ($user) {
                 if (password_verify($senha, $user['senha'])) {
                     if (session_status() === PHP_SESSION_NONE) {
                         session_start();
                     }
                     $stmt_permissoes = $this->connection->prepare(
-                        "SELECT t.tipo, s.nome FROM {$this->tables['perm']} p 
-                    INNER JOIN  {$this->tables['type']} t ON t.id = p.fk_tipo_usuarios_id
+                        "SELECT t.tipos_usuarios, s.nome_sistema FROM {$this->tables['perm']} p 
+                    INNER JOIN  {$this->tables['type']} t ON t.id = p.fk_tipos_usuarios_id
                     INNER JOIN  {$this->tables['sys']} s ON s.id = p.fk_sistemas_id
                     INNER JOIN  {$this->tables['users']} u ON u.id = p.fk_usuarios_id
                     WHERE p.fk_usuarios_id = :id"
                     );
-
-                    $stmt_permissoes->bindValue(':id', $user['id']);
-                    $stmt_permissoes->bindParam(":email", $email);
-                    if (! $stmt_permissoes->execute()) {
+                    $stmt_permissoes->bindParam(':id', $user['id']);
+                    if (!$stmt_permissoes->execute()) {
                         return 2;
                     }
 
@@ -323,5 +331,4 @@ class User extends SelectMain
         }
         return 1;
     }
-    
 }

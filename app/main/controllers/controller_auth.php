@@ -35,14 +35,14 @@ if (
 else if (
     isset($_POST['senha']) && !empty($_POST['senha']) && is_string($_POST['senha']) &&
     isset($_POST['confirmar_senha']) && !empty($_POST['confirmar_senha']) && is_string($_POST['confirmar_senha']) &&
-    isset($_POST['cpf']) && !empty($_POST['cpf']) && is_string($_POST['cpf']) &&
+    isset($_POST['CPF']) && !empty($_POST['CPF']) && is_string($_POST['CPF']) &&
     isset($_POST['email']) && !empty($_POST['email']) && is_string($_POST['email'])
 ) {
 
     $senha = $_POST['senha'];
     $confirmar_senha = $_POST['confirmar_senha'];
     $email = $_POST['email'];
-    $cpf = $_POST['cpf'];
+    $cpf = $_POST['CPF'];
 
     if ($senha !== $confirmar_senha) {
 
@@ -88,20 +88,16 @@ else if (
             header('Location: ../views/login.php?erro');
             exit();
         case 3:
-            header('Location: ../views/login.php?erro_email');
-            exit();
-        case 4:
-            header('Location: ../views/login.php?erro_senha');
+            header('Location: ../views/login.php?erro_email_senha');
             exit();
         default:
             header('Location: ../views/login.php?falha');
             exit();
     }
-} 
+}
 //esqueceu senha
-else if(isset($_POST['email']) && !empty($_POST['email']) && is_string($_POST['email'])){
-
-}else{
+else if (isset($_POST['email']) && !empty($_POST['email']) && is_string($_POST['email'])) {
+} else {
 
     header('location:../views/login.php');
     exit();

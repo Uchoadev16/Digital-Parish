@@ -254,7 +254,7 @@ if (isset($_GET['verificado']) && isset($_SESSION['cpf']) && isset($_SESSION['em
             </div>
             <form method="post" action="../controllers/controller_auth.php" id="formSenhas" class="space-y-5">
               <input type="hidden" id="emailHidden" name="email" value="<?php echo isset($_SESSION['email']) ? htmlspecialchars($_SESSION['email']) : ''; ?>">
-              <input type="hidden" id="cpfHidden" name="cpf" value="<?php echo isset($_SESSION['cpf']) ? htmlspecialchars($_SESSION['cpf']) : ''; ?>">
+              <input type="hidden" id="cpfHidden" name="CPF" value="<?php echo isset($_SESSION['cpf']) ? htmlspecialchars($_SESSION['cpf']) : ''; ?>">
 
               <div class="space-y-2">
                 <label for="senha" class="block text-sm font-medium text-primary">Senha</label>
