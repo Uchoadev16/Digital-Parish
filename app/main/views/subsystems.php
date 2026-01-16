@@ -1,8 +1,11 @@
 <?php
 require_once(__DIR__ . "/../models/Sessions.php");
+require_once(__DIR__ . "/../models/SelectMain.php");
+$select = new SelectMain();
+$dados_usuario_paroquia = $select->selectParoquiaUsuario($_SESSION['id']);
 $session = new Sessions();
-if (isset($_GET['logout'])){
-    $session->logout();
+if (isset($_GET['logout'])) {
+  $session->logout();
 }
 ?>
 
@@ -67,20 +70,18 @@ if (isset($_GET['logout'])){
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-accent/20 border border-accent/30 flex items-center justify-center">
-            <svg class="w-6 h-6 text-accent" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2L13.09 8.26L19 7L14.74 11.27L21 12L14.74 12.73L19 17L13.09 15.74L12 22L10.91 15.74L5 17L9.26 12.73L3 12L9.26 11.27L5 7L10.91 8.26L12 2Z" />
-            </svg>
-          </div>
+          <img src="../assets/logo_paroquia/<?php echo htmlspecialchars($dados_usuario_paroquia['logo'] ?? ''); ?>" alt="Logo da paroquia" class="w-10 h-10 rounded-xl object-cover">
+
           <div>
-            <span class="text-lg font-bold tracking-wider block">DIGITAL</span>
-            <span class="text-xs text-accent tracking-widest">PARISH</span>
+            <span class="text-lg font-bold tracking-wider block"><?php echo htmlspecialchars($dados_usuario_paroquia['nome_paroquia'] ?? 'Digital Parish'); ?></span>
           </div>
         </div>
         <div class="flex items-center gap-4">
           <div class="text-right">
             <p class="text-sm text-white/80"><?php echo htmlspecialchars($_SESSION['nome'] ?? 'Usuário'); ?></p>
-            <p class="text-xs text-accent"><?php echo htmlspecialchars($_SESSION['email'] ?? ''); ?></p>
+            <a href="./perfil.php" class="text-xs text-accent hover:text-accent-light transition-colors cursor-pointer">
+              <?php echo htmlspecialchars($_SESSION['email'] ?? ''); ?>
+            </a>
           </div>
           <a href="./subsystems.php?logout" class="text-white/80 hover:text-accent transition-colors text-sm flex items-center gap-2">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -108,11 +109,47 @@ if (isset($_GET['logout'])){
 
     <!-- Subsistemas Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      
+
+      <?php if (isset($_SESSION['Coroinhas'])): ?>
+        <a href="../subsystems/coroinhas/" class="subsystem-card block">
+          <div class="bg-white rounded-2xl p-6 golden-glow border border-accent/10 h-full flex flex-col">
+            <!-- Icon -->
+            <div class="mb-4">
+              <div class="w-16 h-16 bg-blue-500 rounded-xl flex items-center justify-center mb-4">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Content -->
+            <div class="flex-1">
+              <h3 class="text-xl font-serif font-semibold text-primary mb-2">
+                Coroinhas
+              </h3>
+              <p class="text-sm text-primary/60 leading-relaxed">
+                Gerenciamento de escalas e atividades dos coroinhas
+              </p>
+            </div>
+
+            <!-- Arrow -->
+            <div class="mt-4 flex items-center text-accent group">
+              <span class="text-sm font-medium">Acessar</span>
+              <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </div>
+          </div>
+        </a>
+      <?php endif; ?>
+
     </div>
 
     <!-- Empty State (caso não haja subsistemas) -->
-    <?php if (empty($subsistemasDisponiveis)): ?>
+    <?php
+    $hasSubsystems = isset($_SESSION['Coroinhas']) || isset($_SESSION['Mestres']) || isset($_SESSION['MECs']) || isset($_SESSION['Liturgia']) || isset($_SESSION['Ministério de Música']) || isset($_SESSION['PASCOM']) || isset($_SESSION['Gerenciador de Usuários']) || isset($_SESSION['Missas e Confissões']);
+    if (!$hasSubsystems):
+    ?>
       <div class="text-center py-12">
         <svg class="w-24 h-24 text-primary/20 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />

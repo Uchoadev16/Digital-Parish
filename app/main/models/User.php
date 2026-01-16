@@ -314,21 +314,22 @@ class User extends SelectMain
     public function AddTelefone(int $id_user, string $telefone): int
     {
         $stmt_alterar = $this->connection->prepare("UPDATE {$this->tables['users']} SET telefone = :telefone WHERE id = :id");
-        $stmt_alterar->bindParam(":telfone", $telefone);
+        $stmt_alterar->bindParam(":telefone", $telefone);
         $stmt_alterar->bindParam(":id", $id_user);
         if (!$stmt_alterar->execute()) {
             return 2;
         }
         return 1;
     }
-    public function AddFoto(int $id_user, string $telefone): int
+    public function AddFoto(int $id_user, string $foto): int
     {
-        $stmt_alterar = $this->connection->prepare("UPDATE {$this->tables['users']} SET telefone = :telefone WHERE id = :id");
-        $stmt_alterar->bindParam(":telfone", $telefone);
+        $stmt_alterar = $this->connection->prepare("UPDATE {$this->tables['users']} SET foto_perfil = :foto WHERE id = :id");
+        $stmt_alterar->bindParam(":foto", $foto);
         $stmt_alterar->bindParam(":id", $id_user);
         if (!$stmt_alterar->execute()) {
             return 2;
         }
         return 1;
     }
+
 }

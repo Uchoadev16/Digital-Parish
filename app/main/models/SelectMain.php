@@ -23,9 +23,9 @@ class SelectMain extends Connect
     public function selectParoquiaUsuario(int $userId): array
     {
         $sql =
-            "SELECT * FROM {$this->tables['paroquia']} 
-        inner join {$this->tables['users']} on {$this->tables['paroquia']}.id = {$this->tables['users']}.fk_paroquia_id 
-        WHERE {$this->tables['users']}.id = :id";
+            "SELECT p.*, u.* FROM {$this->tables['pari']} p
+        inner join {$this->tables['users']} u on p.id = u.fk_paroquias_id 
+        WHERE u.id = :id";
         $stmt = $this->connection->prepare($sql);
         $stmt->bindParam(':id', $userId);
         $stmt->execute();
