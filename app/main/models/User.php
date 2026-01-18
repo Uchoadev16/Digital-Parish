@@ -321,15 +321,61 @@ class User extends SelectMain
         }
         return 1;
     }
-    public function AddFoto(int $id_user, string $foto): int
+    public function AddFoto(int $id_user, array $foto): int
     {
-        $stmt_alterar = $this->connection->prepare("UPDATE {$this->tables['users']} SET foto_perfil = :foto WHERE id = :id");
-        $stmt_alterar->bindParam(":foto", $foto);
-        $stmt_alterar->bindParam(":id", $id_user);
-        if (!$stmt_alterar->execute()) {
-            return 2;
+        try {
+            // Verificar se o arquivo foi enviado
+            if (!isset($foto['tmp_name']) || empty($foto['tmp_name'])) {
+                return 3;
+            }
+
+            // Verificar se houve erro no upload
+            if ($foto['error'] !== UPLOAD_ERR_OK) {
+                return 4;
+            }
+
+            // Verificar tipo de foto
+            $tiposPermitidos = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+            if (!in_array($foto['type'], $tiposPermitidos)) {
+                return 5;
+            }
+
+            // Verificar tamanho (máximo 5MB)
+            if ($foto['size'] > 5 * 1024 * 1024) {
+                return 6;
+            }
+
+            // Criar pasta se não existir
+            $pastaDestino = __DIR__ . '/../assets/foto_perfil/';
+            if (!is_dir($pastaDestino)) {
+                mkdir($pastaDestino, 0755, true);
+            }
+
+            // Gerar nome único para o foto
+            $extensao = pathinfo($foto['name'], PATHINFO_EXTENSION);
+            $nomeArquivo = 'perfil_' . $id_user . '_' . time() . '.' . $extensao;
+            $caminhoCompleto = $pastaDestino . $nomeArquivo;
+
+            // Mover foto
+            if (move_uploaded_file($foto['tmp_name'], $caminhoCompleto)) {
+                // Atualizar banco de dados
+                $stmt = $this->connection->prepare("UPDATE {$this->tables['users']} SET foto_perfil = :foto_perfil WHERE id = :id");
+                $stmt->bindValue(':foto_perfil', $nomeArquivo);
+                $stmt->bindValue(':id', $id_user);
+
+                if ($stmt->execute()) {
+                    return 1;
+                } else {
+                    // Se falhou no banco, remover foto
+                    unlink($caminhoCompleto);
+                    return 2;
+                }
+            } else {
+                return 7;
+            }
+        } catch (Exception $e) {
+            return 0;
         }
-        return 1;
     }
 
 }

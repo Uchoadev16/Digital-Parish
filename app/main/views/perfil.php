@@ -99,12 +99,19 @@ $dados_usuario_paroquia = $select->selectParoquiaUsuario($_SESSION['id']);
                     <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-accent/20">
                         <img id="fotoPerfilAtual" src="../assets/foto_perfil/<?= $_SESSION['foto_perfil'] ?? '' ?>" alt="Foto de perfil" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<div class=\'w-full h-full bg-accent/20 flex items-center justify-center\'><svg class=\'w-16 h-16 text-accent\' fill=\'none\' stroke=\'currentColor\' viewBox=\'0 0 24 24\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z\' /></svg></div>'">
                     </div>
-                    <button type="button" onclick="document.getElementById('fotoInput').click()" class="absolute bottom-0 right-0 w-10 h-10 bg-accent rounded-full flex items-center justify-center text-white hover:bg-accent-dark transition-colors shadow-lg">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                    </button>
+                    <form method="post" action="../controllers/controller_auth.php " enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="foto_perfil" class="form-label">Selecionar Nova Foto</label>
+                            <input type="hidden" name="id_usuario" value="<?=$_SESSION['id']?>">
+                            <input type="file" 
+                                   id="foto_perfil" 
+                                   name="foto_perfil" 
+                                   class="form-input" 
+                                   accept="image/*">
+                            <small class="text-gray-500 mt-2 block">Formatos: JPG, PNG, GIF. Máximo: 5MB</small>
+                            <button type="submit">enviar</button>
+                        </div>
+                    </form>
                 </div>
 
                 <!-- Formulário de Upload de Foto -->
@@ -283,7 +290,24 @@ $dados_usuario_paroquia = $select->selectParoquiaUsuario($_SESSION['id']);
             document.getElementById('fotoPreview').src = '';
             document.getElementById('nomeArquivo').textContent = '';
         }
+        function handleImageSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
 
+            // Validar tamanho do arquivo (5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                showMessage('O arquivo é muito grande. Tamanho máximo: 5MB', 'error');
+                event.target.value = '';
+                return;
+            }
+
+            // Validar tipo de arquivo
+            if (!file.type.startsWith('image/')) {
+                showMessage('Por favor, selecione apenas arquivos de imagem.', 'error');
+                event.target.value = '';
+                return;
+            }
+        }
         function formatTelefone(input) {
             let value = input.value.replace(/\D/g, '');
 
