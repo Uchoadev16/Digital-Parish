@@ -32,7 +32,6 @@ class Connect
             } catch (PDOException $e) {
                 // Se falhar, tentar o banco da hospedagem
 
-
                 $this->host = $config['hospedagem']['paroquias']['host'];
                 $this->database = $config['hospedagem']['paroquias']['database'];
                 $this->user = $config['hospedagem']['paroquias']['user'];

@@ -73,7 +73,7 @@ class User extends SelectMain
             return 0;
         }
     }
-    public function login(string $email, string $senha): int
+    public function Login(string $email, string $senha): int
     {
         try {
             $stmt_check = $this->connection->prepare(
