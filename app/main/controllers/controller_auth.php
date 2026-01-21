@@ -130,7 +130,7 @@ else if (isset($_POST['id_usuario']) && !empty($_POST['id_usuario']) && isset($_
     $model_usuario = new User();
     $result = $model_usuario->AddFoto($id_usuario, $foto);
 
-    /*switch ($result) {
+    switch ($result) {
         case 1:
             header('Location: ../views/perfil.php?foto_editada');
             exit();
@@ -155,5 +155,5 @@ else if (isset($_POST['id_usuario']) && !empty($_POST['id_usuario']) && isset($_
         default:
             header('Location: ../views/perfil.php?falha');
             exit();
-    }*/
+    }
 }

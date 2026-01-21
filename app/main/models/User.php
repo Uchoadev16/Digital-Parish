@@ -93,7 +93,8 @@ class User extends SelectMain
                     "SELECT u.*, p.*, pe.* FROM {$this->tables['users']} u
                 INNER JOIN {$this->tables['pari']} p ON p.id = u.fk_paroquias_id
                 INNER JOIN {$this->tables['prof']} pe ON pe.id = u.fk_perfis_id
-                WHERE email = :email");
+                WHERE email = :email"
+                );
                 $stmt_check->bindParam(":email", $email);
                 $stmt_check->execute();
                 $user = $stmt_check->fetch(PDO::FETCH_ASSOC);
@@ -290,27 +291,6 @@ class User extends SelectMain
         }
     }
 
-    public function AlterarSenha(string $email, string $senha): int
-    {
-        $stmt_check = $this->connection->prepare("SELECT * FROM {$this->tables['users']} WHERE email = :email");
-        $stmt_check->bindParam(":email", $email);
-        if (!$stmt_check->execute()) {
-            return 2;
-        }
-        if ($stmt_check->rowCount() == 0) {
-            return 3;
-        }
-        $id = $stmt_check->fetch(PDO::FETCH_ASSOC);
-        $hash = password_hash($senha, PASSWORD_DEFAULT);
-        $stmt_alterar = $this->connection->prepare("UPDATE {$this->tables['users']} SET senha = :senha WHERE email = :email");
-        $stmt_alterar->bindParam(":senha", $hash);
-        $stmt_alterar->bindParam(":email", $email);
-        if (!$stmt_alterar->execute()) {
-            return 2;
-        }
-        return 1;
-    }
-
     public function AddTelefone(int $id_user, string $telefone): int
     {
         $stmt_alterar = $this->connection->prepare("UPDATE {$this->tables['users']} SET telefone = :telefone WHERE id = :id");
@@ -345,12 +325,16 @@ class User extends SelectMain
                 return 6;
             }
 
-            // Criar pasta se não existir
-            $pastaDestino = __DIR__ . '/../assets/foto_perfil/';
-            if (!is_dir($pastaDestino)) {
-                mkdir($pastaDestino, 0755, true);
-            }
+            $stmt_check = $this->connection->prepare("SELECT foto_perfil FROM {$this->tables['users']} WHERE id = :id");
+            $stmt_check->bindParam(":id", $id_user);
+            $stmt_check->execute();
+            $dado = $stmt_check->fetch(PDO::FETCH_ASSOC);
+            $foto_perfil_antiga = $dado['foto_perfil'];
 
+            // Criar pasta se não existir
+            unlink('../assets/foto_perfil/' . $foto_perfil_antiga);
+
+            $pastaDestino = __DIR__ . '/../assets/foto_perfil/';
             // Gerar nome único para o foto
             $extensao = pathinfo($foto['name'], PATHINFO_EXTENSION);
             $nomeArquivo = 'perfil_' . $id_user . '_' . time() . '.' . $extensao;
@@ -364,6 +348,8 @@ class User extends SelectMain
                 $stmt->bindValue(':id', $id_user);
 
                 if ($stmt->execute()) {
+                    session_start();
+                    $_SESSION['foto_perfil'] = $nomeArquivo;
                     return 1;
                 } else {
                     // Se falhou no banco, remover foto
@@ -377,5 +363,4 @@ class User extends SelectMain
             return 0;
         }
     }
-
 }
