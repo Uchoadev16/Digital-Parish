@@ -77,10 +77,9 @@ class User extends SelectMain
     {
         try {
             $stmt_check = $this->connection->prepare(
-                "SELECT u.*, p.*, pe.*, com.* FROM {$this->tables['users']} u
+                "SELECT u.*, p.*, pe.* FROM {$this->tables['users']} u
             INNER JOIN {$this->tables['pari']} p ON p.id = u.fk_paroquias_id
             INNER JOIN {$this->tables['prof']} pe ON pe.id = u.fk_perfis_id
-            INNER JOIN {$this->tables['comm']} com ON com.id = u.fk_comunidades_id
             WHERE email = :email
             "
             );
@@ -88,27 +87,17 @@ class User extends SelectMain
             $stmt_check->execute();
             $user = $stmt_check->fetch(PDO::FETCH_ASSOC);
 
-            if (!$user) {
-                $stmt_check = $this->connection->prepare(
-                    "SELECT u.*, p.*, pe.* FROM {$this->tables['users']} u
-                INNER JOIN {$this->tables['pari']} p ON p.id = u.fk_paroquias_id
-                INNER JOIN {$this->tables['prof']} pe ON pe.id = u.fk_perfis_id
-                WHERE email = :email"
-                );
-                $stmt_check->bindParam(":email", $email);
-                $stmt_check->execute();
-                $user = $stmt_check->fetch(PDO::FETCH_ASSOC);
-            }
             if ($user) {
                 if (password_verify($senha, $user['senha'])) {
                     if (session_status() === PHP_SESSION_NONE) {
                         session_start();
                     }
                     $stmt_permissoes = $this->connection->prepare(
-                        "SELECT t.tipos_usuarios, s.nome_sistema FROM {$this->tables['perm']} p 
+                        "SELECT t.tipos_usuarios, s.nome_sistema, c.nome_comunidade FROM {$this->tables['perm']} p 
                     INNER JOIN  {$this->tables['type']} t ON t.id = p.fk_tipos_usuarios_id
                     INNER JOIN  {$this->tables['sys']} s ON s.id = p.fk_sistemas_id
                     INNER JOIN  {$this->tables['users']} u ON u.id = p.fk_usuarios_id
+                    INNER JOIN  {$this->tables['comm']} c ON c.id = p.fk_usuarios_id
                     WHERE p.fk_usuarios_id = :id"
                     );
                     $stmt_permissoes->bindParam(':id', $user['id']);
@@ -121,6 +110,7 @@ class User extends SelectMain
 
                         $_SESSION[$dado['tipos_usuarios']] = $dado['tipo_usuarios'];
                         $_SESSION[$dado['nome_sistema']] = $dado['nome_sistema'];
+                        $_SESSION[$dado['nome_sistema'] . '_' . $dado['nome_comunidade']] = $dado['nome_sistema'] . '_' . $dado['nome_comunidade'];
                     }
 
                     $_SESSION['id'] = $user['id'];
@@ -367,11 +357,12 @@ class User extends SelectMain
             return 0;
         }
     }
-    public function ReportarProblema(int $id_user, string $problema): int {
+    public function ReportarProblema(int $id_user, string $problema): int
+    {
         try {
 
-        date_default_timezone_get();
-        $datetime = date('Y-m-d H:i:s');
+            date_default_timezone_get();
+            $datetime = date('Y-m-d H:i:s');
             $stmt_alterar = $this->connection->prepare("INSERT INTO {$this->tables['prom']} VALUES(NULL, :problema, 'Pendente', :data_envio, :data_atualizacao, :id)");
             $stmt_alterar->bindParam(":problema", $problema);
             $stmt_alterar->bindParam(":data_envio", $datetime);

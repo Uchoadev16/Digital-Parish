@@ -7,6 +7,7 @@ $session = new Sessions();
 if (isset($_GET['logout'])) {
   $session->logout();
 }
+//print_r($_SESSION);
 ?>
 
 <!DOCTYPE html>
