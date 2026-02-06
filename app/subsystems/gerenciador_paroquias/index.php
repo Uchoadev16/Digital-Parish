@@ -1,5 +1,16 @@
+<?php
+require_once(__DIR__ . "/models/SelectMain.php");
+require_once(__DIR__ . "/models/Sessions.php");
+$session = new Sessions();
+if (isset($_GET['logout'])) {
+  $session->logout();
+}
+$select = new SelectMain();
+$dados_paroquias = $select->selectParoquias();
+?>
 <!DOCTYPE html>
 <html lang="pt-br" class="scroll-smooth">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,41 +45,43 @@
     .card-hover {
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
     .card-hover:hover {
       transform: translateY(-4px);
       box-shadow: 0 20px 40px rgba(212, 165, 116, 0.15);
     }
+
     .golden-glow {
       box-shadow: 0 10px 30px rgba(212, 165, 116, 0.2);
     }
+
     .btn-primary {
       background: linear-gradient(135deg, #d4a574 0%, #b8935e 100%);
       transition: all 0.3s ease;
     }
+
     .btn-primary:hover {
       transform: translateY(-2px);
       box-shadow: 0 10px 30px rgba(212, 165, 116, 0.4);
     }
+
     .mobile-menu {
       transform: translateX(-100%);
       transition: transform 0.3s ease-out;
     }
+
     .mobile-menu.active {
       transform: translateX(0);
     }
+
     .modal-backdrop {
       background: rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(4px);
     }
   </style>
 </head>
-<body class="bg-warm-gray text-primary font-sans antialiased min-h-screen">
 
-  <?php
-    $logoPath = '../../main/index.php';
-    $navPath = '../../main/';
-    include './components/header.php';
-  ?>
+<body class="bg-warm-gray text-primary font-sans antialiased min-h-screen">
 
   <main class="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
@@ -111,73 +124,36 @@
       <section id="listagem-paroquias">
         <h2 class="text-2xl font-display font-bold text-primary mb-6">Paróquias cadastradas</h2>
 
-        <?php
-          // Dados de exemplo conforme documentação (futuramente virão do banco)
-          $paroquias = [
-            [
-              'id' => 1,
-              'nome' => 'Paróquia São José',
-              'endereco' => 'Rua Principal, 123 – Centro',
-              'secretario' => 'Maria Silva',
-              'paroco' => 'Pe. João Silva',
-              'vigarios' => ['Pe. Carlos', 'Pe. Antônio'],
-            ],
-            [
-              'id' => 2,
-              'nome' => 'Paróquia Nossa Senhora',
-              'endereco' => 'Av. das Flores, 456',
-              'secretario' => 'José Santos',
-              'paroco' => 'Pe. Carlos Mendes',
-              'vigarios' => ['Pe. Paulo'],
-            ],
-            [
-              'id' => 3,
-              'nome' => 'Paróquia São Pedro',
-              'endereco' => 'Pça. da Igreja, 789',
-              'secretario' => 'Ana Oliveira',
-              'paroco' => 'Pe. Pedro Costa',
-              'vigarios' => [],
-            ],
-          ];
-        ?>
-
         <div id="grid-paroquias" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <?php foreach ($paroquias as $p): ?>
-          <article class="paroquia-card bg-white rounded-2xl border-2 border-accent/20 overflow-hidden card-hover" data-nome="<?php echo htmlspecialchars($p['nome']); ?>" data-endereco="<?php echo htmlspecialchars($p['endereco']); ?>">
-            <div class="h-2 bg-gradient-to-r from-accent to-accent-dark"></div>
-            <div class="p-6">
-              <h3 class="text-xl font-display font-bold text-primary mb-2"><?php echo htmlspecialchars($p['nome']); ?></h3>
-              <p class="text-gray-600 text-sm mb-4 flex items-start gap-2">
-                <svg class="w-4 h-4 text-accent shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                </svg>
-                <?php echo htmlspecialchars($p['endereco']); ?>
-              </p>
-              <p class="text-gray-500 text-sm mb-1"><strong>Pároco:</strong> <?php echo htmlspecialchars($p['paroco']); ?></p>
-              <p class="text-gray-500 text-sm mb-4"><strong>Secretário(a):</strong> <?php echo htmlspecialchars($p['secretario']); ?></p>
-
-              <div class="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-gray-100">
-                <a href="./views/informacoes.php?id=<?php echo (int)$p['id']; ?>" class="text-accent hover:text-accent-dark font-semibold text-sm inline-flex items-center gap-1">
-                  Informações
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          <?php foreach ($dados_paroquias as $p): ?>
+            <article class="paroquia-card bg-white rounded-2xl border-2 border-accent/20 overflow-hidden card-hover" data-nome="<?php echo htmlspecialchars($p['nome_paroquia']); ?>" data-endereco="<?php echo htmlspecialchars($p['localizacao']); ?>">
+              <div class="h-2 bg-gradient-to-r from-accent to-accent-dark"></div>
+              <div class="p-6">
+                <h3 class="text-xl font-display font-bold text-primary mb-2"><?php echo htmlspecialchars($p['nome_paroquia']); ?></h3>
+                <p class="text-gray-600 text-sm mb-4 flex items-start gap-2">
+                  <svg class="w-4 h-4 text-accent shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   </svg>
-                </a>
-                <div class="flex items-center gap-2">
-                  <a href="./views/editar.php?id=<?php echo (int)$p['id']; ?>" class="p-2 rounded-lg text-gray-600 hover:bg-accent/10 hover:text-accent transition-colors" title="Editar paróquia">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                    </svg>
-                  </a>
-                  <button type="button" class="btn-excluir p-2 rounded-lg text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors" title="Excluir paróquia" data-id="<?php echo (int)$p['id']; ?>" data-nome="<?php echo htmlspecialchars($p['nome']); ?>">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
-                  </button>
+                  <?php echo htmlspecialchars($p['localizacao']); ?>
+                </p>
+
+                <div class="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-gray-100">
+                
+                  <div class="flex items-center gap-2">
+                    <a href="./views/editar.php?id=<?php echo (int)$p['id']; ?>" class="p-2 rounded-lg text-gray-600 hover:bg-accent/10 hover:text-accent transition-colors" title="Editar paróquia">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                    </a>
+                    <button type="button" class="btn-excluir p-2 rounded-lg text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors" title="Excluir paróquia" data-id="<?php echo (int)$p['id']; ?>" data-nome="<?php echo htmlspecialchars($p['nome_paroquia']); ?>">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          </article>
+            </article>
           <?php endforeach; ?>
         </div>
 
@@ -218,7 +194,7 @@
   </div>
 
   <script>
-    (function () {
+    (function() {
       var busca = document.getElementById('busca-paroquia');
       var grid = document.getElementById('grid-paroquias');
       var cards = document.querySelectorAll('.paroquia-card');
@@ -227,19 +203,19 @@
       function filtrar() {
         var termo = (busca.value || '').trim().toLowerCase();
         var visiveis = 0;
-        cards.forEach(function (card) {
-            var nome = (card.getAttribute('data-nome') || '').toLowerCase();
-            var endereco = (card.getAttribute('data-endereco') || '').toLowerCase();
-            var exibir = !termo || nome.indexOf(termo) >= 0 || endereco.indexOf(termo) >= 0;
-            card.style.display = exibir ? '' : 'none';
-            if (exibir) visiveis++;
+        cards.forEach(function(card) {
+          var nome = (card.getAttribute('data-nome') || '').toLowerCase();
+          var endereco = (card.getAttribute('data-endereco') || '').toLowerCase();
+          var exibir = !termo || nome.indexOf(termo) >= 0 || endereco.indexOf(termo) >= 0;
+          card.style.display = exibir ? '' : 'none';
+          if (exibir) visiveis++;
         });
         nenhumResultado.classList.toggle('hidden', visiveis > 0);
       }
 
       if (busca) {
-          busca.addEventListener('input', filtrar);
-          busca.addEventListener('search', filtrar);
+        busca.addEventListener('input', filtrar);
+        busca.addEventListener('search', filtrar);
       }
 
       var modal = document.getElementById('modal-excluir');
@@ -250,56 +226,57 @@
       var erroCodigo = document.getElementById('erro-codigo');
 
       function abrirModal(id, nome) {
-          modalNome.textContent = nome;
-          modalId.value = id;
-          codigoInput.value = '';
-          erroCodigo.classList.add('hidden');
-          modal.classList.remove('hidden');
-          modal.setAttribute('aria-hidden', 'false');
-          codigoInput.focus();
+        modalNome.textContent = nome;
+        modalId.value = id;
+        codigoInput.value = '';
+        erroCodigo.classList.add('hidden');
+        modal.classList.remove('hidden');
+        modal.setAttribute('aria-hidden', 'false');
+        codigoInput.focus();
       }
 
       function fecharModal() {
-          modal.classList.add('hidden');
-          modal.setAttribute('aria-hidden', 'true');
+        modal.classList.add('hidden');
+        modal.setAttribute('aria-hidden', 'true');
       }
 
-      document.querySelectorAll('.btn-excluir').forEach(function (btn) {
-          btn.addEventListener('click', function () {
-              var id = this.getAttribute('data-id');
-              var nome = this.getAttribute('data-nome');
-              abrirModal(id, nome);
-          });
+      document.querySelectorAll('.btn-excluir').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var id = this.getAttribute('data-id');
+          var nome = this.getAttribute('data-nome');
+          abrirModal(id, nome);
+        });
       });
 
       document.getElementById('fecha-modal-backdrop').addEventListener('click', fecharModal);
       document.getElementById('btn-cancelar-excluir').addEventListener('click', fecharModal);
 
-      formExcluir.addEventListener('submit', function (e) {
-          e.preventDefault();
-          erroCodigo.classList.add('hidden');
-          // Aqui seria a chamada ao backend: enviar código, verificar e excluir.
-          // Por enquanto apenas simula sucesso (código qualquer aceito para demo).
-          var codigo = codigoInput.value.trim();
-          if (!codigo) {
-              erroCodigo.classList.remove('hidden');
-              erroCodigo.textContent = 'Informe o código de verificação.';
-              return;
-          }
-          // Simulação: aceitar código "1234" para demonstração
-          if (codigo !== '1234') {
-              erroCodigo.textContent = 'Código incorreto. Tente novamente.';
-              erroCodigo.classList.remove('hidden');
-              return;
-          }
-          fecharModal();
-          // Em produção: redirecionar ou remover o card da lista após exclusão no servidor
-          var card = document.querySelector('.btn-excluir[data-id="' + modalId.value + '"]');
-          if (card && card.closest('.paroquia-card')) {
-              card.closest('.paroquia-card').remove();
-          }
+      formExcluir.addEventListener('submit', function(e) {
+        e.preventDefault();
+        erroCodigo.classList.add('hidden');
+        // Aqui seria a chamada ao backend: enviar código, verificar e excluir.
+        // Por enquanto apenas simula sucesso (código qualquer aceito para demo).
+        var codigo = codigoInput.value.trim();
+        if (!codigo) {
+          erroCodigo.classList.remove('hidden');
+          erroCodigo.textContent = 'Informe o código de verificação.';
+          return;
+        }
+        // Simulação: aceitar código "1234" para demonstração
+        if (codigo !== '1234') {
+          erroCodigo.textContent = 'Código incorreto. Tente novamente.';
+          erroCodigo.classList.remove('hidden');
+          return;
+        }
+        fecharModal();
+        // Em produção: redirecionar ou remover o card da lista após exclusão no servidor
+        var card = document.querySelector('.btn-excluir[data-id="' + modalId.value + '"]');
+        if (card && card.closest('.paroquia-card')) {
+          card.closest('.paroquia-card').remove();
+        }
       });
     })();
   </script>
 </body>
+
 </html>

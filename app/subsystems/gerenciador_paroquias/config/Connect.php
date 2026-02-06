@@ -16,7 +16,7 @@ class Connect
     protected function getConnection()
     {
         try {
-            $config = require(__DIR__ . "/../../.env/config.php");
+            $config = require(__DIR__ . "/../../../.env/config.php");
 
             // Tentar primeiro o banco local
             try {
@@ -45,7 +45,7 @@ class Connect
 
             error_log("Erro de conexão com banco: " . $e->getMessage());
             $this->connection = null;
-            header('location:../views/windows/desconectado.php');
+            header('location:../../views/windows/desconectado.php');
             exit();
         }
     }

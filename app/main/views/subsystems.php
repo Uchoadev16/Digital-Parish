@@ -1,12 +1,16 @@
 <?php
 require_once(__DIR__ . "/../models/Sessions.php");
 require_once(__DIR__ . "/../models/SelectMain.php");
-$select = new SelectMain();
-$dados_usuario_paroquia = $select->selectParoquiaUsuario($_SESSION['id']);
+
 $session = new Sessions();
 if (isset($_GET['logout'])) {
   $session->logout();
 }
+
+$select = new SelectMain();
+$dados_usuario_paroquia = $select->selectParoquiaUsuario($_SESSION['id']);
+$dados_subsistemas = $select->selectSistemas($_SESSION['id']);
+
 //print_r($_SESSION);
 ?>
 
@@ -87,10 +91,10 @@ if (isset($_GET['logout'])) {
           <!-- Foto de Perfil Clicável -->
           <a href="./perfil.php" class="relative group cursor-pointer">
             <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-accent/30 hover:border-accent transition-all duration-300 shadow-lg hover:shadow-xl">
-              <img src="../assets/foto_perfil/<?= $_SESSION['foto_perfil'] ?? '' ?>" 
-                   alt="Foto de perfil" 
-                   class="w-full h-full object-cover"
-                   onerror="this.parentElement.innerHTML='<div class=\'w-full h-full bg-accent/20 flex items-center justify-center\'><svg class=\'w-6 h-6 text-accent\' fill=\'none\' stroke=\'currentColor\' viewBox=\'0 0 24 24\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z\' /></svg></div>'">
+              <img src="../assets/foto_perfil/<?= $_SESSION['foto_perfil'] ?? '' ?>"
+                alt="Foto de perfil"
+                class="w-full h-full object-cover"
+                onerror="this.parentElement.innerHTML='<div class=\'w-full h-full bg-accent/20 flex items-center justify-center\'><svg class=\'w-6 h-6 text-accent\' fill=\'none\' stroke=\'currentColor\' viewBox=\'0 0 24 24\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z\' /></svg></div>'">
             </div>
             <div class="absolute inset-0 bg-accent/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
               <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -132,8 +136,8 @@ if (isset($_GET['logout'])) {
     <!-- Subsistemas Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
-      <?php if (isset($_SESSION['Coroinhas'])): ?>
-        <a href="../subsystems/coroinhas/" class="subsystem-card block">
+      <?php if (isset($_SESSION['Gerenciador de Paróquias'])): ?>
+        <a href="../../subsystems/gerenciador_paroquias/index.php" class="subsystem-card block">
           <div class="bg-white rounded-2xl p-6 golden-glow border border-accent/10 h-full flex flex-col">
             <!-- Icon -->
             <div class="mb-4">
@@ -147,10 +151,10 @@ if (isset($_GET['logout'])) {
             <!-- Content -->
             <div class="flex-1">
               <h3 class="text-xl font-serif font-semibold text-primary mb-2">
-                Coroinhas
+                Gerenciador de Paróquias
               </h3>
               <p class="text-sm text-primary/60 leading-relaxed">
-                Gerenciamento de escalas e atividades dos coroinhas
+                Gerenciamento de paróquias
               </p>
             </div>
 
@@ -167,19 +171,7 @@ if (isset($_GET['logout'])) {
 
     </div>
 
-    <!-- Empty State (caso não haja subsistemas) -->
-    <?php
-    $hasSubsystems = isset($_SESSION['Coroinhas']) || isset($_SESSION['Mestres']) || isset($_SESSION['MECs']) || isset($_SESSION['Liturgia']) || isset($_SESSION['Ministério de Música']) || isset($_SESSION['PASCOM']) || isset($_SESSION['Gerenciador de Usuários']) || isset($_SESSION['Missas e Confissões']);
-    if (!$hasSubsystems):
-    ?>
-      <div class="text-center py-12">
-        <svg class="w-24 h-24 text-primary/20 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-        </svg>
-        <h3 class="text-2xl font-serif font-semibold text-primary mb-2">Nenhum subsistema disponível</h3>
-        <p class="text-primary/60">Entre em contato com o administrador para obter acesso aos subsistemas.</p>
-      </div>
-    <?php endif; ?>
+
   </main>
 
   <!-- Footer -->

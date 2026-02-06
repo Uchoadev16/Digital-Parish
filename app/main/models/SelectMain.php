@@ -40,4 +40,11 @@ class SelectMain extends Connect
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function selectSistemas(int $userId): array
+    {
+        $sql = "SELECT * FROM {$this->tables['sys']}";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
