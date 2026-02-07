@@ -116,7 +116,7 @@ $dados_paroquias = $select->selectParoquias();
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </span>
-          <input type="search" id="busca-paroquia" placeholder="Digite o nome ou endereço da paróquia..." class="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all" />
+          <input type="search" id="busca-paroquia" placeholder="Nome, endereço ou telefone da paróquia..." class="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all" />
         </div>
       </section>
 
@@ -125,32 +125,55 @@ $dados_paroquias = $select->selectParoquias();
         <h2 class="text-2xl font-display font-bold text-primary mb-6">Paróquias cadastradas</h2>
 
         <div id="grid-paroquias" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <?php foreach ($dados_paroquias as $p): ?>
-            <article class="paroquia-card bg-white rounded-2xl border-2 border-accent/20 overflow-hidden card-hover" data-nome="<?php echo htmlspecialchars($p['nome_paroquia']); ?>" data-endereco="<?php echo htmlspecialchars($p['localizacao']); ?>">
-              <div class="h-2 bg-gradient-to-r from-accent to-accent-dark"></div>
-              <div class="p-6">
-                <h3 class="text-xl font-display font-bold text-primary mb-2"><?php echo htmlspecialchars($p['nome_paroquia']); ?></h3>
-                <p class="text-gray-600 text-sm mb-4 flex items-start gap-2">
+          <?php foreach ($dados_paroquias as $p):
+            $logo = isset($p['logo']) && $p['logo'] !== '' ? $p['logo'] : null;
+            $telefone = isset($p['telefone']) ? $p['telefone'] : '';
+          ?>
+            <article class="paroquia-card bg-white rounded-2xl border-2 border-accent/20 overflow-hidden card-hover shadow-sm" data-nome="<?php echo htmlspecialchars($p['nome_paroquia']); ?>" data-endereco="<?php echo htmlspecialchars($p['localizacao'] ?? ''); ?>" data-telefone="<?php echo htmlspecialchars($telefone); ?>">
+              <div class="h-1.5 bg-gradient-to-r from-accent to-accent-dark"></div>
+              <div class="p-5 flex flex-col items-center">
+                <div class="w-20 h-20 rounded-2xl border-2 border-accent/20 overflow-hidden bg-warm-gray flex items-center justify-center mb-4 shrink-0 golden-glow">
+                  <?php if ($logo): ?>
+                    <img src="../../main/assets/logo_paroquia/<?php echo htmlspecialchars($logo); ?>" alt="Logo <?php echo htmlspecialchars($p['nome_paroquia']); ?>" class="w-full h-full object-cover" />
+                  <?php else: ?>
+                    <svg class="w-10 h-10 text-accent/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                  <?php endif; ?>
+                </div>
+                <h3 class="text-xl font-display font-bold text-primary mb-2 text-center"><?php echo htmlspecialchars($p['nome_paroquia']); ?></h3>
+                <p class="text-gray-600 text-sm mb-2 flex items-start gap-2 w-full">
                   <svg class="w-4 h-4 text-accent shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   </svg>
-                  <?php echo htmlspecialchars($p['localizacao']); ?>
+                  <span class="line-clamp-2"><?php echo htmlspecialchars($p['localizacao'] ?? '—'); ?></span>
                 </p>
-
-                <div class="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-gray-100">
-                
-                  <div class="flex items-center gap-2">
-                    <a href="./views/editar.php?id=<?php echo (int)$p['id']; ?>" class="p-2 rounded-lg text-gray-600 hover:bg-accent/10 hover:text-accent transition-colors" title="Editar paróquia">
-                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                      </svg>
-                    </a>
-                    <button type="button" class="btn-excluir p-2 rounded-lg text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors" title="Excluir paróquia" data-id="<?php echo (int)$p['id']; ?>" data-nome="<?php echo htmlspecialchars($p['nome_paroquia']); ?>">
-                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                      </svg>
-                    </button>
-                  </div>
+                <?php if ($telefone !== ''): ?>
+                <p class="text-gray-600 text-sm flex items-center gap-2 w-full">
+                  <svg class="w-4 h-4 text-accent shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  </svg>
+                  <a href="tel:<?php echo htmlspecialchars(preg_replace('/\D/', '', $telefone)); ?>" class="hover:text-accent transition-colors"><?php echo htmlspecialchars($telefone); ?></a>
+                </p>
+                <?php else: ?>
+                <p class="text-gray-400 text-sm flex items-center gap-2 w-full">
+                  <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  </svg>
+                  <span>—</span>
+                </p>
+                <?php endif; ?>
+                <div class="flex items-center gap-2 mt-4 pt-4 border-t border-gray-100 w-full justify-center">
+                  <a href="./views/editar.php?id=<?php echo (int)$p['id']; ?>" class="p-2 rounded-lg text-gray-500 hover:bg-accent/10 hover:text-accent transition-colors" title="Editar paróquia">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                  </a>
+                  <button type="button" class="btn-excluir p-2 rounded-lg text-gray-500 hover:bg-red-50 hover:text-red-600 transition-colors" title="Excluir paróquia" data-id="<?php echo (int)$p['id']; ?>" data-nome="<?php echo htmlspecialchars($p['nome_paroquia']); ?>">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </button>
                 </div>
               </div>
             </article>
@@ -206,7 +229,8 @@ $dados_paroquias = $select->selectParoquias();
         cards.forEach(function(card) {
           var nome = (card.getAttribute('data-nome') || '').toLowerCase();
           var endereco = (card.getAttribute('data-endereco') || '').toLowerCase();
-          var exibir = !termo || nome.indexOf(termo) >= 0 || endereco.indexOf(termo) >= 0;
+          var telefone = (card.getAttribute('data-telefone') || '').toLowerCase();
+          var exibir = !termo || nome.indexOf(termo) >= 0 || endereco.indexOf(termo) >= 0 || telefone.indexOf(termo) >= 0;
           card.style.display = exibir ? '' : 'none';
           if (exibir) visiveis++;
         });
