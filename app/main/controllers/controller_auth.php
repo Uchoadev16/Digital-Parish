@@ -176,4 +176,9 @@ else if (isset($_POST['id_usuario']) && !empty($_POST['id_usuario']) && isset($_
             header('Location: ../views/problemas.php?falha');
             exit();
     }
+}else{
+    session_destroy();
+    session_unset();
+    header('location: ../index.php');
+    exit;
 }

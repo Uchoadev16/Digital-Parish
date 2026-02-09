@@ -1,5 +1,9 @@
 <?php
-
+require_once(__DIR__ . "/Sessions.php");
+$session = new Sessions();
+if (isset($_GET['logout'])) {
+  $session->logout();
+}
 require_once(__DIR__ . "/../config/Connect.php");
 class SelectMain extends Connect
 {

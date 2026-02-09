@@ -164,16 +164,16 @@ $dados_paroquias = $select->selectParoquias();
                 </p>
                 <?php endif; ?>
                 <div class="flex items-center gap-2 mt-4 pt-4 border-t border-gray-100 w-full justify-center">
-                  <a href="./views/editar.php?id=<?php echo (int)$p['id']; ?>" class="p-2 rounded-lg text-gray-500 hover:bg-accent/10 hover:text-accent transition-colors" title="Editar paróquia">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                    </svg>
-                  </a>
-                  <button type="button" class="btn-excluir p-2 rounded-lg text-gray-500 hover:bg-red-50 hover:text-red-600 transition-colors" title="Excluir paróquia" data-id="<?php echo (int)$p['id']; ?>" data-nome="<?php echo htmlspecialchars($p['nome_paroquia']); ?>">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
-                  </button>
+                  <form method="post" action="./controllers/controller_crud_paroquia.php" class="inline">
+                    <input type="hidden" name="email" value="<?php echo htmlspecialchars($_SESSION['email'] ?? ''); ?>">
+                    <input type="hidden" name="cpf" value="<?php echo htmlspecialchars($_SESSION['cpf'] ?? ''); ?>">
+                    <input type="hidden" name="id_paroquia" value="<?php echo (int)$p['id']; ?>">
+                    <button type="submit" class="btn-excluir p-2 rounded-lg text-gray-500 hover:bg-red-50 hover:text-red-600 transition-colors" title="Excluir paróquia">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  </form>
                 </div>
               </div>
             </article>
@@ -194,9 +194,11 @@ $dados_paroquias = $select->selectParoquias();
       <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 relative">
         <h3 class="text-xl font-display font-bold text-primary mb-2">Excluir paróquia</h3>
         <p class="text-gray-600 mb-4">
-          Será enviado um código para o e-mail do secretário da paróquia <strong id="modal-nome-paroquia"></strong>. Informe o código abaixo para confirmar a exclusão.
+          Foi enviado um código para o e-mail cadastrado. Informe o código abaixo para confirmar a exclusão da paróquia.
         </p>
-        <form id="form-excluir" class="space-y-4">
+        <form id="form-excluir" class="space-y-4" method="post" action="./controllers/controller_crud_paroquia.php">
+          <input type="hidden" name="email" value="<?php echo htmlspecialchars($_SESSION['email'] ?? ''); ?>" />
+          <input type="hidden" name="cpf" value="<?php echo htmlspecialchars($_SESSION['cpf'] ?? ''); ?>" />
           <input type="hidden" id="modal-id-paroquia" name="id" value="" />
           <div>
             <label for="codigo-exclusao" class="block text-sm font-semibold text-gray-700 mb-1">Código de verificação</label>
@@ -243,62 +245,29 @@ $dados_paroquias = $select->selectParoquias();
       }
 
       var modal = document.getElementById('modal-excluir');
-      var modalNome = document.getElementById('modal-nome-paroquia');
-      var modalId = document.getElementById('modal-id-paroquia');
       var formExcluir = document.getElementById('form-excluir');
-      var codigoInput = document.getElementById('codigo-exclusao');
-      var erroCodigo = document.getElementById('erro-codigo');
-
-      function abrirModal(id, nome) {
-        modalNome.textContent = nome;
-        modalId.value = id;
-        codigoInput.value = '';
-        erroCodigo.classList.add('hidden');
-        modal.classList.remove('hidden');
-        modal.setAttribute('aria-hidden', 'false');
-        codigoInput.focus();
-      }
 
       function fecharModal() {
+        if (!modal) return;
         modal.classList.add('hidden');
         modal.setAttribute('aria-hidden', 'true');
       }
 
-      document.querySelectorAll('.btn-excluir').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          var id = this.getAttribute('data-id');
-          var nome = this.getAttribute('data-nome');
-          abrirModal(id, nome);
-        });
-      });
+      var backdrop = document.getElementById('fecha-modal-backdrop');
+      var btnCancelar = document.getElementById('btn-cancelar-excluir');
+      if (backdrop) {
+        backdrop.addEventListener('click', fecharModal);
+      }
+      if (btnCancelar) {
+        btnCancelar.addEventListener('click', fecharModal);
+      }
 
-      document.getElementById('fecha-modal-backdrop').addEventListener('click', fecharModal);
-      document.getElementById('btn-cancelar-excluir').addEventListener('click', fecharModal);
-
-      formExcluir.addEventListener('submit', function(e) {
-        e.preventDefault();
-        erroCodigo.classList.add('hidden');
-        // Aqui seria a chamada ao backend: enviar código, verificar e excluir.
-        // Por enquanto apenas simula sucesso (código qualquer aceito para demo).
-        var codigo = codigoInput.value.trim();
-        if (!codigo) {
-          erroCodigo.classList.remove('hidden');
-          erroCodigo.textContent = 'Informe o código de verificação.';
-          return;
-        }
-        // Simulação: aceitar código "1234" para demonstração
-        if (codigo !== '1234') {
-          erroCodigo.textContent = 'Código incorreto. Tente novamente.';
-          erroCodigo.classList.remove('hidden');
-          return;
-        }
-        fecharModal();
-        // Em produção: redirecionar ou remover o card da lista após exclusão no servidor
-        var card = document.querySelector('.btn-excluir[data-id="' + modalId.value + '"]');
-        if (card && card.closest('.paroquia-card')) {
-          card.closest('.paroquia-card').remove();
-        }
-      });
+      // Se o backend redirecionar com ?email_enviado, abrir o modal automaticamente
+      var urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('email_enviado') && modal) {
+        modal.classList.remove('hidden');
+        modal.setAttribute('aria-hidden', 'false');
+      }
     })();
   </script>
 </body>

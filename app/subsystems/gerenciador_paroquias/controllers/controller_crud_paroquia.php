@@ -1,5 +1,10 @@
 <?php
 require_once(__DIR__ . "/../models/Admin.php");
+require_once(__DIR__ . "/../models/Sessions.php");
+$session = new Sessions();
+if (isset($_GET['logout'])) {
+    $session->logout();
+}
 
 echo "<pre>";
 print_r($_POST);
@@ -76,4 +81,72 @@ if (
             header('Location: ../views/cadastrar.php?falha');
             exit;
     }
+} else if (
+    isset($_POST['email'])  && !empty($_POST['email']) && is_string($_POST['email']) &&
+    isset($_POST['cpf'])  && !empty($_POST['cpf']) && is_string($_POST['cpf']) &&
+    isset($_POST['id_paroquia'])  && !empty($_POST['id_paroquia']) && is_string($_POST['id_paroquia'])
+) {
+    $email = trim($_POST['email']);
+    $cpf = trim($_POST['cpf']);
+    $id_paroquia = trim($_POST['id_paroquia']);
+
+    $model_admin = new Admin();
+    $result = $model_admin->EmailExcluirParoquia($email, $cpf, $id_paroquia);
+
+    switch ($result) {
+        case 1:
+            header('Location: ../index.php?email_enviado');
+            exit;
+        case 2:
+            header('Location: ../index.php?erro');
+            exit;
+        case 3:
+            header('Location: ../index.php?paroquia_nao_existe');
+            exit;
+        case 4:
+            header('Location: ../index.php?email_cpf_invalidos');
+            exit;
+        case 5:
+            header('Location: ../index.php?erro_envio_email');
+            exit;
+        default:
+            header('Location: ../index.php?falha');
+            exit;
+    }
+} else if (
+    isset($_POST['email'])  && !empty($_POST['email']) && is_string($_POST['email']) &&
+    isset($_POST['cpf'])  && !empty($_POST['cpf']) && is_string($_POST['cpf']) &&
+    isset($_POST['codigo'])  && !empty($_POST['codigo']) && is_string($_POST['codigo'])
+) {
+    $email = trim($_POST['email']);
+    $cpf = trim($_POST['cpf']);
+    $codigo = trim($_POST['codigo']);
+
+    $model_admin = new Admin();
+    $result = $model_admin->VerificarCodigo($email, $cpf, (int)$codigo);
+
+    switch ($result) {
+        case 1:
+            header('Location: ../index.php?paroquia_excluida');
+            exit;
+        case 2:
+            header('Location: ../index.php?codigo_expirado');
+            exit;
+        case 3:
+            header('Location: ../index.php?erro_exclusao');
+            exit;
+        case 4:
+            header('Location: ../index.php?email_cpf_invalidos');
+            exit;
+        case 5:
+            header('Location: ../index.php?codigo_incorreto');
+            exit;
+        default:
+            header('Location: ../index.php?falha');
+            exit;
+    }
+
+} else {
+    header('location: ../index.php');
+    exit;
 }

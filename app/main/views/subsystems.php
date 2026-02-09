@@ -2,6 +2,8 @@
 require_once(__DIR__ . "/../models/Sessions.php");
 require_once(__DIR__ . "/../models/SelectMain.php");
 
+//print_r($_SESSION);
+
 $session = new Sessions();
 if (isset($_GET['logout'])) {
   $session->logout();
@@ -10,8 +12,6 @@ if (isset($_GET['logout'])) {
 $select = new SelectMain();
 $dados_usuario_paroquia = $select->selectParoquiaUsuario($_SESSION['id']);
 $dados_subsistemas = $select->selectSistemas($_SESSION['id']);
-
-//print_r($_SESSION);
 ?>
 
 <!DOCTYPE html>

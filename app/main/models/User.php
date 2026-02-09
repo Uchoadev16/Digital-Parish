@@ -77,7 +77,7 @@ class User extends SelectMain
     {
         try {
             $stmt_check = $this->connection->prepare(
-                "SELECT u.*, p.*, pe.* FROM {$this->tables['users']} u
+                "SELECT u.*, p.id AS id_paroquia, pe.id AS id_perfil FROM {$this->tables['users']} u
             INNER JOIN {$this->tables['pari']} p ON p.id = u.fk_paroquias_id
             INNER JOIN {$this->tables['prof']} pe ON pe.id = u.fk_perfis_id
             WHERE email = :email
@@ -119,7 +119,7 @@ class User extends SelectMain
                     $_SESSION['cpf'] = $user['cpf'];
                     $_SESSION['foto_perfil'] = $user['foto_perfil'];
                     $_SESSION['paroquias_id'] = $user['fk_paroquias_id'];
-                    $_SESSION['perfis_id'] = $user['fk_perfis_id'];
+                    $_SESSION['perfis_id'] = $user['id_perfil'];
                     $_SESSION['comunidades_id'] = $user['fk_comunidades_id'];
                     return 1;
                 } else {
