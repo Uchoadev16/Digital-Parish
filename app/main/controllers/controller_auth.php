@@ -1,10 +1,11 @@
 <?php
 require_once(__DIR__ . "/../models/User.php");
-
+/*
 echo "<pre>";
 print_r($_POST);
 print_r($_FILES);
 echo "</pre>";
+*/
 //pre-cadastro
 if (
     isset($_POST['cpf']) && !empty($_POST['cpf']) && is_string($_POST['cpf']) &&
