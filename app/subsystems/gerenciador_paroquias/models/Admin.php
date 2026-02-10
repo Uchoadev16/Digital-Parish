@@ -150,48 +150,48 @@ class Admin extends SelectMain
     public function EmailExcluirParoquia(string $email, string $cpf, int $id_paroquia): int
     {
         try {
-        $stmt_check = $this->connection->prepare("SELECT * FROM {$this->tables['users']} WHERE email = :email AND cpf = :cpf");
-        $stmt_check->bindParam(":email", $email);
-        $stmt_check->bindParam(":cpf", $cpf);
-        if (!$stmt_check->execute()) {
-            return 2;
-        }
-        if ($stmt_check->rowCount() == 0) {
-            return 3;
-        }
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-        $_SESSION['email_excluir_paroquia'] = $email;
-        $_SESSION['cpf_excluir_paroquia'] = $cpf;
-        $_SESSION['id_paroquia_excluir'] = $id_paroquia;
-        $_SESSION['codigo'] = random_int(100000, 999999);
+            $stmt_check = $this->connection->prepare("SELECT * FROM {$this->tables['users']} WHERE email = :email AND cpf = :cpf");
+            $stmt_check->bindParam(":email", $email);
+            $stmt_check->bindParam(":cpf", $cpf);
+            if (!$stmt_check->execute()) {
+                return 2;
+            }
+            if ($stmt_check->rowCount() == 0) {
+                return 3;
+            }
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+            $_SESSION['email_excluir_paroquia'] = $email;
+            $_SESSION['cpf_excluir_paroquia'] = $cpf;
+            $_SESSION['id_paroquia_excluir'] = $id_paroquia;
+            $_SESSION['codigo'] = random_int(100000, 999999);
 
-        $dados = require(__DIR__ . '/../../../.env/config.php');
-        $mail = new PHPMailer(true);
-        try {
+            $dados = require(__DIR__ . '/../../../.env/config.php');
+            $mail = new PHPMailer(true);
+            try {
 
-            $mail->SMTPDebug = 0;
-            $mail->Debugoutput = function ($str, $level) {
-                error_log("PHPMailer Debug [$level]: $str"); // Redirecionar debug para error_log
-            };
-            $mail->isSMTP();
-            $mail->Host = $dados['emails']['host'];
-            $mail->SMTPAuth = true;
-            $mail->Username = $dados['emails']['email'];
-            $mail->Password = $dados['emails']['senha'];
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port = $dados['emails']['porta'];
+                $mail->SMTPDebug = 0;
+                $mail->Debugoutput = function ($str, $level) {
+                    error_log("PHPMailer Debug [$level]: $str"); // Redirecionar debug para error_log
+                };
+                $mail->isSMTP();
+                $mail->Host = $dados['emails']['host'];
+                $mail->SMTPAuth = true;
+                $mail->Username = $dados['emails']['email'];
+                $mail->Password = $dados['emails']['senha'];
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port = $dados['emails']['porta'];
 
-            // Destinatário e remetente
-            $mail->setFrom($dados['emails']['email'], 'Paróquia Digital');
-            $mail->addAddress($email);
+                // Destinatário e remetente
+                $mail->setFrom($dados['emails']['email'], 'Paróquia Digital');
+                $mail->addAddress($email);
 
-            // Conteúdo do e-mail
-            $mail->isHTML(true);
-            $mail->CharSet = 'UTF-8';
-            $mail->Subject = 'Recuperar Senha - Paróquia Digital';
-            $mail->Body = '
+                // Conteúdo do e-mail
+                $mail->isHTML(true);
+                $mail->CharSet = 'UTF-8';
+                $mail->Subject = 'Deletar paróquia - Paróquia Digital';
+                $mail->Body = '
             <!DOCTYPE html>
             <html lang="pt-BR">
             <head>
@@ -250,7 +250,7 @@ class Admin extends SelectMain
                 <table role="presentation" class="email-container">
                     <tr>
                         <td class="header">
-                            <img src="https://i.postimg.cc/0N0dsxrM/Bras-o-do-Cear-svg-removebg-preview.png" alt="Logo Salaberga">                         </td>
+                            <img src="../../../main/assets/logo.jpg" alt="Logo Salaberga">                         </td>
                     </tr>
                     <tr>
                         <td class="content">
@@ -271,20 +271,20 @@ class Admin extends SelectMain
             </body>
             </html>';
 
-            $mail->AltBody = "Olá,\n\nVocê solicitou a recuperação de senha para o Sistema Paróquia Digital. Use o código abaixo para redefinir sua senha:\n\n" . $_SESSION['codigo'] . "\n\nEste código é válido por 10 minutos.";
+                $mail->AltBody = "Olá,\n\nVocê solicitou a recuperação de senha para o Sistema Paróquia Digital. Use o código abaixo para redefinir sua senha:\n\n" . $_SESSION['codigo'] . "\n\nEste código é válido por 10 minutos.";
 
-            // Enviar e-mail
-            $mail->send();
-            error_log("E-mail enviado com sucesso para $email em " . date('Y-m-d H:i:s'));
-            $_SESSION['email_success'] = 'E-mail de recuperação enviado com sucesso!';
+                // Enviar e-mail
+                $mail->send();
+                error_log("E-mail enviado com sucesso para $email em " . date('Y-m-d H:i:s'));
+                $_SESSION['email_success'] = 'E-mail de recuperação enviado com sucesso!';
+                return 1;
+            } catch (Exception $e) {
+                error_log("Erro ao enviar e-mail para $email: {$mail->ErrorInfo} em " . date('Y-m-d H:i:s'));
+                $_SESSION['email_error'] = 'Erro ao enviar o e-mail de recuperação. Tente novamente.';
+                return 0;
+            }
+
             return 1;
-        } catch (Exception $e) {
-            error_log("Erro ao enviar e-mail para $email: {$mail->ErrorInfo} em " . date('Y-m-d H:i:s'));
-            $_SESSION['email_error'] = 'Erro ao enviar o e-mail de recuperação. Tente novamente.';
-            return 0;
-        }
-
-        return 1;
         } catch (Exception $e) {
             return 0;
         }
@@ -293,35 +293,51 @@ class Admin extends SelectMain
     public function VerificarCodigo(string $email, string $cpf, int $codigo): int
     {
         try {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
 
-        if (
-            !isset($_SESSION['email_excluir_paroquia'], $_SESSION['cpf_excluir_paroquia'], $_SESSION['codigo'], $_SESSION['id_paroquia_excluir'])
-        ) {
-            return 2;
-        }
+            if (
+                !isset($_SESSION['email_excluir_paroquia'], $_SESSION['cpf_excluir_paroquia'], $_SESSION['codigo'], $_SESSION['id_paroquia_excluir'])
+            ) {
+                return 2;
+            }
 
-        if ($email !== $_SESSION['email_excluir_paroquia'] || $cpf !== $_SESSION['cpf_excluir_paroquia']) {
-            return 4;
-        }
+            if ($email !== $_SESSION['email_excluir_paroquia'] || $cpf !== $_SESSION['cpf_excluir_paroquia']) {
+                return 4;
+            }
 
-        if ((int)$codigo !== (int)$_SESSION['codigo']) {
-            return 5;
-        }
+            if ((int)$codigo !== (int)$_SESSION['codigo']) {
+                return 5;
+            }
 
-        $id_paroquia = (int)$_SESSION['id_paroquia_excluir'];
+            $id_paroquia = (int)$_SESSION['id_paroquia_excluir'];
 
-        $stmt_delete = $this->connection->prepare("DELETE FROM {$this->tables['pari']} WHERE id = :id");
-        $stmt_delete->bindParam(':id', $id_paroquia, PDO::PARAM_INT);
-        if (!$stmt_delete->execute()) {
-            return 3;
-        }
+            $stmt_dados_users = $this->connection->query("SELECT id, foto_perfil FROM {$this->tables['users']} WHERE fk_paroquias_id = '$id_paroquia'");
+            $dados_users = $stmt_dados_users->fetchAll(PDO::FETCH_ASSOC);
 
-        unset($_SESSION['email_excluir_paroquia'], $_SESSION['cpf_excluir_paroquia'], $_SESSION['codigo'], $_SESSION['id_paroquia_excluir']);
+            foreach ($dados_users as $dado) {
+                $stmt_delete = $this->connection->query("DELETE FROM {$this->tables['perm']} WHERE fk_usuarios_id = '{$dado['id']}'");
+                unlink('../../../main/assets/foto_perfil/' . $dado['logo']);
 
-        return 1;
+            }
+            foreach ($$dados_users as $dado) {
+                $stmt_delete = $this->connection->query("DELETE FROM {$this->tables['prom']} WHERE fk_usuarios_id = '{$dado['id']}'");
+            }
+            $stmt_delete = $this->connection->query("DELETE FROM {$this->tables['comm']} WHERE fk_paroquias_id = '$id_paroquia'");
+            
+            $stmt_logo_paroquia = $this->connection->query("SELECT logo FROM {$this->tables['pari']} WHERE id = '$id_paroquia'");
+            $logo = $stmt_logo_paroquia->fetch(PDO::FETCH_ASSOC);
+
+            unlink('../../../main/assets/logo_paroquia/' . $logo['logo']);
+
+            $stmt_delete = $this->connection->query("DELETE FROM {$this->tables['users']} WHERE fk_paroquias_id = '$id_paroquia'");
+            $stmt_delete = $this->connection->query("DELETE FROM {$this->tables['prof']} WHERE fk_paroquias_id = '$id_paroquia'");
+            $stmt_delete = $this->connection->query("DELETE FROM {$this->tables['pari']} WHERE id = '$id_paroquia'");
+
+            unset($_SESSION['email_excluir_paroquia'], $_SESSION['cpf_excluir_paroquia'], $_SESSION['codigo'], $_SESSION['id_paroquia_excluir']);
+
+            return 1;
         } catch (Exception $e) {
             return 0;
         }

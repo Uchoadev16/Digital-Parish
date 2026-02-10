@@ -1,5 +1,6 @@
 **/.env/
 **/database/
+**/docs/
 # Arquivos de configuração sensíveis
 **/config.php
 **/tables.php
