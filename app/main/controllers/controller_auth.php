@@ -1,9 +1,11 @@
 <?php
 require_once(__DIR__ . "/../models/User.php");
+session_start();
 /*
 echo "<pre>";
 print_r($_POST);
 print_r($_FILES);
+print_r($_SESSION);
 echo "</pre>";
 */
 //pre-cadastro
@@ -12,8 +14,8 @@ if (
     isset($_POST['email']) && !empty($_POST['email']) && is_string($_POST['email'])
 ) {
 
-    $email = $_POST['email'];
-    $cpf = $_POST['cpf'];
+    $email = trim($_POST['email']);
+    $cpf = trim($_POST['cpf']);
 
     $model_usuario = new User();
     $result = $model_usuario->PreCadastro($email, $cpf);
@@ -43,8 +45,8 @@ else if (
 
     $senha = $_POST['senha'];
     $confirmar_senha = $_POST['confirmar_senha'];
-    $email = $_POST['email'];
-    $cpf = $_POST['CPF'];
+    $email = trim($_POST['email']);
+    $cpf = trim($_POST['CPF']);
 
     if ($senha !== $confirmar_senha) {
 
@@ -76,8 +78,8 @@ else if (
     isset($_POST['email']) && !empty($_POST['email']) && is_string($_POST['email'])
 ) {
 
-    $email = $_POST['email'];
-    $senha = $_POST['senha'];
+    $email = trim($_POST['email']);
+    $senha = trim($_POST['senha']);
 
     $model_usuario = new User();
     $result = $model_usuario->Login($email, $senha);
@@ -99,10 +101,97 @@ else if (
 }
 //esqueceu senha
 else if (isset($_POST['email']) && !empty($_POST['email']) && is_string($_POST['email'])) {
-} else if (isset($_POST['email'])) {
 
-    header('location:../views/login.php');
-    exit();
+    $email = trim($_POST['email']);
+
+    $model_usuario = new User();
+    $result = $model_usuario->EsqueceuSenha($email);
+
+    switch ($result) {
+        case 1:
+            header('Location: ../views/esquecer_senha.php?codigo_enviado');
+            exit();
+        case 2:
+            header('Location: ../views/esquecer_senha.php?erro');
+            exit();
+        case 3:
+            header('Location: ../views/esquecer_senha.php?email_nao_existe');
+            exit();
+        case 4:
+            header('Location: ../views/esquecer_senha.php?erro_enviar_email');
+            exit();
+        default:
+            header('Location: ../views/login.php?falha');
+            exit();
+    }
+} else if (isset($_POST['reenviar_codigo'])) {
+
+    $email = $_SESSION['email_recuperar_senha'];
+    $model_usuario = new User();
+    $result = $model_usuario->EsqueceuSenha($email);
+
+    switch ($result) {
+        case 1:
+            header('Location: ../views/esquecer_senha.php?codigo_enviado');
+            exit();
+        case 2:
+            header('Location: ../views/esquecer_senha.php?erro');
+            exit();
+        case 3:
+            header('Location: ../views/esquecer_senha.php?email_nao_existe');
+            exit();
+        case 4:
+            header('Location: ../views/esquecer_senha.php?erro_enviar_email');
+            exit();
+        default:
+            header('Location: ../views/login.php?falha');
+            exit();
+    }
+} else if (
+    isset($_POST['codigo']) && !empty($_POST['codigo']) && is_string($_POST['codigo'])
+) {
+
+    $codigo = trim($_POST['codigo']);
+    if ($codigo == $_SESSION['codigo']) {
+
+        header('location: ../views/esquecer_senha.php?rec_senha');
+        exit();
+    } else {
+
+        header('location: ../views/esquecer_senha.php?codigo_enviado&erro_codigo');
+        exit();
+    }
+} else if (
+    isset($_POST['new_password']) && !empty($_POST['new_password']) && is_string($_POST['new_password']) &&
+    isset($_POST['confirm_password']) && !empty($_POST['confirm_password']) && is_string($_POST['confirm_password'])
+) {
+
+    $senha = $_POST['new_password'];
+    $confirmar_senha = $_POST['confirm_password'];
+    $email = trim($_SESSION['email_recuperar_senha']);
+
+    if ($senha !== $confirmar_senha) {
+
+        header('location:../views/esquecer_senha.php?rec_senha&senha_nao_condizem');
+        exit();
+    }
+    $model_usuario = new User();
+    $result = $model_usuario->AlteraSenha($email, $senha);
+
+    switch ($result) {
+        case 1:
+            header('Location: ../views/login.php?senha_alterada');
+            exit();
+        case 2:
+            header('Location: ../views/esquecer_senha.php?rec_senha&erro');
+            exit();
+        case 3:
+            header('Location: ../views/login.php?email_nao_existe');
+            exit();
+        default:
+            header('Location: ../views/login.php?falha');
+            exit();
+    }
 } else if (isset($_POST['telefone']) && !empty($_POST['telefone'])) {
 
     session_start();
@@ -157,7 +246,7 @@ else if (isset($_POST['id_usuario']) && !empty($_POST['id_usuario']) && isset($_
             header('Location: ../views/perfil.php?falha');
             exit();
     }
-}else if(isset($_POST['problema']) && !empty($_POST['problema'])){
+} else if (isset($_POST['problema']) && !empty($_POST['problema'])) {
 
     session_start();
     $telefone = $_POST['problema'];
@@ -176,7 +265,7 @@ else if (isset($_POST['id_usuario']) && !empty($_POST['id_usuario']) && isset($_
             header('Location: ../views/problemas.php?falha');
             exit();
     }
-}else{
+} else {
     session_destroy();
     session_unset();
     header('location: ../index.php');

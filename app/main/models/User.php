@@ -147,19 +147,12 @@ class User extends SelectMain
             if (session_status() === PHP_SESSION_NONE) {
                 session_start();
             }
+            $dados = $stmt_check->fetch(PDO::FETCH_ASSOC);
+            $_SESSION['id_paroquia_rec'] = $dados['fk_paroquias_id'];
             $_SESSION['email_recuperar_senha'] = $email;
             $_SESSION['codigo'] = random_int(100000, 999999);
 
-            $tempo = time();
-            if (time() - $tempo > 600) {
-
-                session_unset();
-                session_destroy();
-                return 4;
-            }
-
-            $tempo = time();
-            $dados = require(__DIR__ . '/../../../.env/config.php');
+            $dados = require(__DIR__ . '/../../.env/config.php');
             $mail = new PHPMailer(true);
             try {
 
@@ -275,12 +268,39 @@ class User extends SelectMain
                 $_SESSION['email_error'] = 'Erro ao enviar o e-mail de recuperação. Tente novamente.';
                 return 0;
             }
+
             return 1;
         } catch (Exception $e) {
             return 0;
         }
     }
 
+    public function AlteraSenha(string $email, string $senha): int
+    {
+        try {
+            $stmt_check = $this->connection->prepare("SELECT * FROM {$this->tables['users']} WHERE email = :email");
+            $stmt_check->bindParam(":email", $email);
+            if (!$stmt_check->execute()) {
+                return 2;
+            }
+
+            if ($stmt_check->rowCount() === 0) {
+                return 3;
+            }
+
+            $hash = password_hash($senha, PASSWORD_DEFAULT);
+            $stmt_cadastrar = $this->connection->prepare("UPDATE {$this->tables['users']} SET senha = :senha WHERE email = :email");
+            $stmt_cadastrar->bindParam(":senha", $hash);
+            $stmt_cadastrar->bindParam(":email", $email);
+            if (!$stmt_cadastrar->execute()) {
+                return 2;
+            }
+
+            return 1;
+        } catch (Exception $e) {
+            return 0;
+        }
+    }
     public function AddTelefone(int $id_user, string $telefone): int
     {
         try {
