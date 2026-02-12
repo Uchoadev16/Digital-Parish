@@ -109,326 +109,126 @@
   </style>
 </head>
 <body class="bg-white text-primary font-sans antialiased">
-  
-  <?php
-    $logoPath = '#inicio';
-    $logoSrc = './assets/logo.svg';
-    $navPath = '';
-    include './components/header.php';
-  ?>
 
-  <section id="inicio" class="min-h-screen flex items-center justify-center pt-20 px-4 sm:px-6 lg:px-8 relative" style="background-image: url('./assets/inicio.jpg'); background-size: cover; background-position: center 10%; background-repeat: no-repeat; background-attachment: fixed;">
-    <div class="absolute inset-0 bg-gradient-to-br from-deep-blue/80 via-primary/70 to-wine/60"></div>
-    <div class="max-w-4xl mx-auto w-full section-enter relative z-10">
-      <div class="text-center">
-        <div class="mb-6">
-          <span class="ornament text-accent text-sm tracking-[0.3em] uppercase font-medium">Bem-vindo</span>
-        </div>
-
-        <h1 class="text-5xl sm:text-6xl lg:text-7xl font-display font-bold text-white mb-6 leading-tight">
-          Portal <span class="text-accent">Paroquial</span>
+  <section id="inicio" class="min-h-screen flex items-center justify-center pt-24 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-deep-blue/90 via-primary/85 to-wine/80 relative">
+    <div class="absolute inset-0 opacity-20" style="background-image: url('./assets/inicio.jpg'); background-size: cover; background-position: center 10%; background-repeat: no-repeat;"></div>
+    <div class="max-w-5xl mx-auto w-full relative z-10">
+      <div class="text-center mb-12">
+        <span class="ornament text-accent text-sm tracking-[0.3em] uppercase font-medium">Área Administrativa</span>
+        <h1 class="mt-6 text-4xl sm:text-5xl lg:text-6xl font-display font-bold text-white leading-tight">
+          Gerenciador de <span class="text-accent">Usuários</span>
         </h1>
-        <p class="text-xl sm:text-2xl text-gray-200 mb-12 max-w-3xl mx-auto leading-relaxed font-light">
-          Sistema integrado de gerenciamento de missas e comunidades católicas
+        <p class="mt-6 text-lg sm:text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
+          Centralize o acesso aos <span class="font-semibold text-accent-light">usuários</span>, 
+          <span class="font-semibold text-accent-light">perfis</span> e 
+          <span class="font-semibold text-accent-light">permissões</span> do sistema em um só lugar.
         </p>
-        
-        <a href="./views/informacoes.php" class="btn-primary inline-flex items-center gap-3 text-white px-8 py-4 rounded-full font-semibold text-lg">
-          Explorar Programações
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-          </svg>
-        </a>
+      </div>
 
-        <div class="mt-16 animate-bounce">
-          <a href="#programacoes" class="inline-block p-2 text-white/60 hover:text-white transition-colors">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Usuários -->
+        <a href="./views/usuario.php" class="bg-white/95 rounded-2xl p-6 md:p-7 card-hover border border-accent/30 golden-border-glow block">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-display font-bold text-primary">Usuários</h2>
+            <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-accent text-white shadow-md">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A4 4 0 018 16h8a4 4 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </span>
+          </div>
+          <p class="text-gray-600 mb-4">
+            Acesse o cadastro, listagem e controle de todos os usuários do sistema.
+          </p>
+          <div class="flex items-center justify-between pt-3 border-t border-accent/20 text-sm text-accent">
+            <span class="font-semibold">Gerenciar usuários</span>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="programacoes" class="min-h-screen py-24 px-4 sm:px-6 lg:px-8 bg-white">
-    <div class="max-w-7xl mx-auto">
-      <div class="text-center mb-20">
-        <h2 class="text-5xl sm:text-6xl font-display font-bold text-primary mb-6">Programações</h2>
-        <p class="text-xl text-gray-600 max-w-2xl mx-auto">Confira os horários das missas e celebrações</p>
-        <div class="w-24 h-1.5 bg-accent rounded-full mx-auto mt-8 golden-glow"></div>
-      </div>
-
-      <div class="mb-20">
-        <div class="flex items-center gap-4 mb-8">
-          <div class="w-2 h-14 bg-accent rounded-full golden-glow"></div>
-          <h3 class="text-3xl font-display font-bold text-primary">Paróquia São José</h3>
-          <span class="ml-auto text-sm font-semibold text-accent bg-accent/10 px-4 py-2 rounded-full border border-accent/30">6 Missas</span>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <a href="./views/informacoes.php?missa=missa1" class="bg-white border-2 border-accent/30 rounded-xl p-6 card-hover cursor-pointer hover:border-accent hover:shadow-[0_8px_30px_rgba(212,165,116,0.25)] block transition-all">
-            <div class="flex items-center justify-between mb-4">
-              <span class="text-xs font-bold text-accent bg-accent/10 px-3 py-1.5 rounded-full border border-accent/30">DOMINGO</span>
-              <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-            <p class="text-4xl font-bold text-accent mb-2">08:00</p>
-            <p class="text-gray-600 font-medium mb-4">Missa Dominical</p>
-            <div class="pt-4 border-t border-accent/20 flex items-center gap-2 text-sm text-gray-500">
-              <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-              <span>Pe. João Silva</span>
-            </div>
-          </a>
-
-          <a href="./views/informacoes.php?missa=missa2" class="bg-white border-2 border-accent/30 rounded-xl p-6 card-hover cursor-pointer hover:border-accent hover:shadow-[0_8px_30px_rgba(212,165,116,0.25)] block transition-all">
-            <div class="flex items-center justify-between mb-4">
-              <span class="text-xs font-bold text-accent bg-accent/10 px-3 py-1.5 rounded-full border border-accent/30">DOMINGO</span>
-              <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-            <p class="text-4xl font-bold text-accent mb-2">10:00</p>
-            <p class="text-gray-600 font-medium mb-4">Missa das Famílias</p>
-            <div class="pt-4 border-t border-accent/20 flex items-center gap-2 text-sm text-gray-500">
-              <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-              <span>Pe. João Silva</span>
-            </div>
-          </a>
-
-          <a href="./views/informacoes.php?missa=missa3" class="bg-white border-2 border-accent/30 rounded-xl p-6 card-hover cursor-pointer hover:border-accent hover:shadow-[0_8px_30px_rgba(212,165,116,0.25)] block transition-all">
-            <div class="flex items-center justify-between mb-4">
-              <span class="text-xs font-bold text-accent bg-accent/10 px-3 py-1.5 rounded-full border border-accent/30">DOMINGO</span>
-              <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-            <p class="text-4xl font-bold text-accent mb-2">18:00</p>
-            <p class="text-gray-600 font-medium mb-4">Missa Vespertina</p>
-            <div class="pt-4 border-t border-accent/20 flex items-center gap-2 text-sm text-gray-500">
-              <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-              <span>Pe. João Silva</span>
-            </div>
-          </a>
-        </div>
-      </div>
-
-      <div class="mb-20">
-        <div class="flex items-center gap-4 mb-8">
-          <div class="w-2 h-14 bg-accent-dark rounded-full"></div>
-          <h3 class="text-3xl font-display font-bold text-primary">Paróquia Nossa Senhora</h3>
-          <span class="ml-auto text-sm font-semibold text-accent bg-accent/10 px-4 py-2 rounded-full border border-accent/30">4 Missas</span>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <a href="./views/informacoes.php?missa=missa4" class="bg-white border-2 border-accent/30 rounded-xl p-6 card-hover cursor-pointer hover:border-accent hover:shadow-[0_8px_30px_rgba(212,165,116,0.25)] block transition-all">
-            <div class="flex items-center justify-between mb-4">
-              <span class="text-xs font-bold text-accent bg-accent/10 px-3 py-1.5 rounded-full border border-accent/30">SÁBADO</span>
-              <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-            <p class="text-4xl font-bold text-accent mb-2">19:00</p>
-            <p class="text-gray-600 font-medium mb-4">Missa de Sábado</p>
-            <div class="pt-4 border-t border-accent/20 flex items-center gap-2 text-sm text-gray-500">
-              <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-              <span>Pe. Carlos Mendes</span>
-            </div>
-          </a>
-
-          <a href="./views/informacoes.php?missa=missa5" class="bg-white border-2 border-accent/30 rounded-xl p-6 card-hover cursor-pointer hover:border-accent hover:shadow-[0_8px_30px_rgba(212,165,116,0.25)] block transition-all">
-            <div class="flex items-center justify-between mb-4">
-              <span class="text-xs font-bold text-accent bg-accent/10 px-3 py-1.5 rounded-full border border-accent/30">DOMINGO</span>
-              <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-            <p class="text-4xl font-bold text-accent mb-2">09:30</p>
-            <p class="text-gray-600 font-medium mb-4">Missa Solene</p>
-            <div class="pt-4 border-t border-accent/20 flex items-center gap-2 text-sm text-gray-500">
-              <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-              <span>Pe. Carlos Mendes</span>
-            </div>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="parcerias" class="min-h-screen py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-accent-light/10 via-white to-accent/5">
-    <div class="max-w-7xl mx-auto">
-      <div class="text-center mb-20">
-        <h2 class="text-5xl sm:text-6xl font-display font-bold text-primary mb-6">Parcerias</h2>
-        <p class="text-xl text-gray-600 max-w-2xl mx-auto">Nossas paróquias parceiras</p>
-        <div class="w-24 h-1.5 bg-accent rounded-full mx-auto mt-8 golden-glow"></div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div class="bg-white rounded-2xl overflow-hidden shadow-lg card-hover border-2 border-accent/20">
-          <div class="h-48 bg-gradient-to-br from-accent to-accent-dark relative">
-            <div class="absolute inset-0 flex items-center justify-center">
-              <svg class="w-16 h-16 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
-            </div>
           </div>
-          <div class="p-6">
-            <h3 class="text-2xl font-display font-bold text-primary mb-3">Paróquia São José</h3>
-            <p class="text-gray-600 mb-4">Centro da cidade, atendendo a comunidade há mais de 50 anos.</p>
-            <div class="flex items-center gap-2 text-sm text-accent">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              <span>Rua Principal, 123</span>
-            </div>
-          </div>
-        </div>
+        </a>
 
-        <div class="bg-white rounded-2xl overflow-hidden shadow-lg card-hover border-2 border-accent/20">
-          <div class="h-48 bg-gradient-to-br from-accent-dark to-primary relative">
-            <div class="absolute inset-0 flex items-center justify-center">
-              <svg class="w-16 h-16 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+        <!-- Perfis -->
+        <a href="./views/perfil.php" class="bg-white/95 rounded-2xl p-6 md:p-7 card-hover border border-accent/30 golden-border-glow block">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-display font-bold text-primary">Perfis</h2>
+            <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-deep-blue text-white shadow-md">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
               </svg>
-            </div>
+            </span>
           </div>
-          <div class="p-6">
-            <h3 class="text-2xl font-display font-bold text-primary mb-3">Paróquia N. Senhora</h3>
-            <p class="text-gray-600 mb-4">Comunidade acolhedora com forte presença de jovens e famílias.</p>
-            <div class="flex items-center gap-2 text-sm text-accent">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              <span>Av. das Flores, 456</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-white rounded-2xl overflow-hidden shadow-lg card-hover border-2 border-accent/20">
-          <div class="h-48 bg-gradient-to-br from-accent-light to-accent relative">
-            <div class="absolute inset-0 flex items-center justify-center">
-              <svg class="w-16 h-16 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
-            </div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-2xl font-display font-bold text-primary mb-3">Paróquia São Pedro</h3>
-            <p class="text-gray-600 mb-4">Tradição e modernidade em harmonia, servindo a comunidade local.</p>
-            <div class="flex items-center gap-2 text-sm text-accent">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              <span>Pça. da Igreja, 789</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="sobre" class="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-white">
-    <div class="max-w-5xl mx-auto">
-      <div class="text-center mb-20">
-        <h2 class="text-5xl sm:text-6xl font-display font-bold text-primary mb-6">Sobre o Projeto</h2>
-        <p class="text-xl text-gray-600 max-w-2xl mx-auto">Nossa missão e valores</p>
-        <div class="w-24 h-1.5 bg-accent rounded-full mx-auto mt-8 golden-glow"></div>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
-        <div>
-          <h3 class="text-3xl font-display font-bold text-primary mb-6">Nossa Missão</h3>
-          <p class="text-lg text-gray-600 leading-relaxed mb-6">
-            O Digital Parish nasceu com o propósito de facilitar a comunicação entre paróquias e fiéis, 
-            tornando mais acessível a informação sobre horários de missas e eventos religiosos.
+          <p class="text-gray-600 mb-4">
+            Organize funções e responsabilidades através de perfis personalizados.
           </p>
-          <p class="text-lg text-gray-600 leading-relaxed">
-            Acreditamos que a tecnologia pode ser uma ferramenta poderosa para fortalecer os laços 
-            comunitários e aproximar as pessoas de sua fé.
-          </p>
-        </div>
-        <div class="bg-gradient-to-br from-accent-light/30 to-accent/20 rounded-2xl p-8 lg:p-12 border-2 border-accent/30">
-          <div class="space-y-6">
-            <div class="flex items-start gap-4">
-              <div class="w-12 h-12 bg-accent rounded-xl flex items-center justify-center flex-shrink-0 golden-glow">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <div>
-                <h4 class="text-xl font-bold text-accent mb-2">Acessibilidade</h4>
-                <p class="text-gray-600">Informação clara e disponível para todos</p>
-              </div>
-            </div>
-            <div class="flex items-start gap-4">
-              <div class="w-12 h-12 bg-accent rounded-xl flex items-center justify-center flex-shrink-0 golden-glow">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <div>
-                <h4 class="text-xl font-bold text-accent mb-2">Comunidade</h4>
-                <p class="text-gray-600">Fortalecendo laços entre paróquias e fiéis</p>
-              </div>
-            </div>
-            <div class="flex items-start gap-4">
-              <div class="w-12 h-12 bg-accent rounded-xl flex items-center justify-center flex-shrink-0 golden-glow">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <div>
-                <h4 class="text-xl font-bold text-accent mb-2">Inovação</h4>
-                <p class="text-gray-600">Tecnologia a serviço da fé</p>
-              </div>
-            </div>
+          <div class="flex items-center justify-between pt-3 border-t border-accent/20 text-sm text-accent">
+            <span class="font-semibold">Configurar perfis</span>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
           </div>
-        </div>
-      </div>
+        </a>
 
-      <div class="bg-gradient-to-br from-accent to-accent-dark text-white rounded-2xl p-12 text-center golden-glow mb-12">
-        <h3 class="text-3xl font-display font-bold mb-6">Entre em Contato</h3>
-        <p class="text-lg text-accent-light mb-8 max-w-2xl mx-auto">
-          Quer cadastrar sua paróquia ou tem alguma dúvida? Estamos aqui para ajudar.
-        </p>
-        <a href="mailto:contato@digitalparish.com" class="inline-flex items-center gap-2 bg-white hover:bg-accent-light text-accent px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-          </svg>
-          Enviar E-mail
+        <!-- Permissões -->
+        <a href="./views/permissao.php" class="bg-white/95 rounded-2xl p-6 md:p-7 card-hover border border-accent/30 golden-border-glow block">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-display font-bold text-primary">Permissões</h2>
+            <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-wine text-white shadow-md">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21v-2a4 4 0 00-4-4H9a4 4 0 00-4 4v2" />
+              </svg>
+            </span>
+          </div>
+          <p class="text-gray-600 mb-4">
+            Defina o que cada perfil e usuário pode acessar dentro do sistema.
+          </p>
+          <div class="flex items-center justify-between pt-3 border-t border-accent/20 text-sm text-accent">
+            <span class="font-semibold">Controlar permissões</span>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
         </a>
       </div>
+    </div>
+  </section>
 
-      <div class="text-center pt-12 border-t-2 border-accent/20">
-        <h4 class="text-xl font-display font-bold text-primary mb-4">Desenvolvido por</h4>
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-12">
-          <div class="text-center">
-            <p class="text-lg font-semibold text-accent mb-2">Matheus Felix</p>
-           
-          </div>
-          <div class="hidden sm:block w-px h-8 bg-accent/20"></div>
-          <div class="text-center">
-            <p class="text-lg font-semibold text-accent">Pedro Uchoa</p>
-         
-          </div>
-        </div>
-      </div>
-         
-        </a>
-      </div>
+  <section id="programacoes" class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+    <div class="max-w-5xl mx-auto text-center">
+      <h2 class="text-3xl sm:text-4xl font-display font-bold text-primary mb-4">
+        Como funciona este módulo
+      </h2>
+      <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+        Utilize os atalhos acima para navegar entre as áreas de 
+        <span class="font-semibold text-accent">Usuários</span>, 
+        <span class="font-semibold text-accent">Perfis</span> e 
+        <span class="font-semibold text-accent">Permissões</span>. 
+        Aqui você poderá configurar quem acessa o quê dentro do sistema.
+      </p>
+    </div>
+  </section>
+
+  <section id="parcerias" class="py-12 px-4 sm:px-6 lg:px-8 bg-warm-gray">
+    <div class="max-w-5xl mx-auto text-center">
+      <h2 class="text-2xl sm:text-3xl font-display font-bold text-primary mb-3">
+        Integração com outros módulos
+      </h2>
+      <p class="text-gray-600">
+        As configurações de usuários, perfis e permissões podem ser utilizadas por outros
+        subsistemas da sua paróquia, garantindo um controle centralizado de acesso.
+      </p>
+    </div>
+  </section>
+
+  <section id="sobre" class="py-12 px-4 sm:px-6 lg:px-8 bg-white">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-2xl sm:text-3xl font-display font-bold text-primary mb-3">
+        Sobre o Gerenciador de Usuários
+      </h2>
+      <p class="text-gray-600">
+        Este módulo foi criado para oferecer uma administração simples e elegante dos acessos
+        ao sistema, mantendo a identidade visual do projeto Digital Parish.
+      </p>
     </div>
   </section>
 
