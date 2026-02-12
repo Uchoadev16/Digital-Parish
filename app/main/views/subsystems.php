@@ -169,6 +169,39 @@ $dados_subsistemas = $select->selectSistemas($_SESSION['id']);
         </a>
       <?php endif; ?>
 
+      <?php if (isset($_SESSION['Gerenciador de Usuários'])): ?>
+        <a href="../../subsystems/gerenciador_usuarios/index.php" class="subsystem-card block">
+          <div class="bg-white rounded-2xl p-6 golden-glow border border-accent/10 h-full flex flex-col">
+            <!-- Icon -->
+            <div class="mb-4">
+              <div class="w-16 h-16 bg-blue-500 rounded-xl flex items-center justify-center mb-4">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Content -->
+            <div class="flex-1">
+              <h3 class="text-xl font-serif font-semibold text-primary mb-2">
+                Gerenciador de Usuários
+              </h3>
+              <p class="text-sm text-primary/60 leading-relaxed">
+                Gerenciamento de usuários
+              </p>
+            </div>
+
+            <!-- Arrow -->
+            <div class="mt-4 flex items-center text-accent group">
+              <span class="text-sm font-medium">Acessar</span>
+              <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </div>
+          </div>
+        </a>
+      <?php endif; ?>
+
     </div>
 
 

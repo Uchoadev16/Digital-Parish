@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Digital Parish - Perfis</title>
+  <title>Digital Parish - Usuários</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
@@ -33,20 +33,14 @@
 </head>
 <body class="bg-warm-gray text-primary font-sans antialiased">
 
-  <?php
-    $logoPath = '../index.php#inicio';
-    $logoSrc = '../assets/logo.svg';
-    $navPath = '../';
-    include '../components/header.php';
-  ?>
 
   <main class="pt-28 pb-16 px-4 sm:px-6 lg:px-8">
     <div class="max-w-6xl mx-auto">
       <div class="flex items-center justify-between mb-10">
         <div>
-          <h1 class="text-3xl sm:text-4xl font-display font-bold text-primary">Perfis</h1>
+          <h1 class="text-3xl sm:text-4xl font-display font-bold text-primary">Usuários</h1>
           <p class="mt-2 text-gray-600">
-            Defina e organize os perfis que agrupam permissões e responsabilidades.
+            Aqui você poderá listar, cadastrar e gerenciar os usuários do sistema.
           </p>
         </div>
         <a href="../index.php#inicio" class="hidden sm:inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-accent-dark">
@@ -59,8 +53,8 @@
 
       <div class="bg-white rounded-2xl shadow-sm border border-accent/20 p-6 sm:p-8">
         <p class="text-gray-500 text-sm">
-          Área de gerenciamento de perfis ainda não implementada. 
-          Use esta página para criar, editar e remover perfis de acesso.
+          Área de gerenciamento de usuários ainda não implementada. 
+          Utilize esta página para montar a listagem, filtros e formulários de cadastro.
         </p>
       </div>
     </div>

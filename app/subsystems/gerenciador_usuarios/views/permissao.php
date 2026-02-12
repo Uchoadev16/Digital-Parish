@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Digital Parish - Perfis</title>
+  <title>Digital Parish - Permissões</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -44,9 +44,9 @@
     <div class="max-w-6xl mx-auto">
       <div class="flex items-center justify-between mb-10">
         <div>
-          <h1 class="text-3xl sm:text-4xl font-display font-bold text-primary">Perfis</h1>
+          <h1 class="text-3xl sm:text-4xl font-display font-bold text-primary">Permissões</h1>
           <p class="mt-2 text-gray-600">
-            Defina e organize os perfis que agrupam permissões e responsabilidades.
+            Controle detalhado do que cada usuário ou perfil pode fazer dentro do sistema.
           </p>
         </div>
         <a href="../index.php#inicio" class="hidden sm:inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-accent-dark">
@@ -59,8 +59,8 @@
 
       <div class="bg-white rounded-2xl shadow-sm border border-accent/20 p-6 sm:p-8">
         <p class="text-gray-500 text-sm">
-          Área de gerenciamento de perfis ainda não implementada. 
-          Use esta página para criar, editar e remover perfis de acesso.
+          Área de configuração de permissões ainda não implementada. 
+          Utilize este espaço para vincular permissões a perfis e usuários.
         </p>
       </div>
     </div>
