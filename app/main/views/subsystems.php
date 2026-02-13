@@ -69,7 +69,7 @@ $dados_subsistemas = $select->selectSistemas($_SESSION['id']);
   </style>
 </head>
 
-<body class="min-h-screen font-sans bg-warm-gray">
+<body class="min-h-screen font-sans bg-warm-gray flex flex-col justify-between">
   <!-- Header -->
   <header class="bg-primary text-white shadow-lg">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -121,7 +121,7 @@ $dados_subsistemas = $select->selectSistemas($_SESSION['id']);
   </header>
 
   <!-- Main Content -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <main class="max-w-7xl grow mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <!-- Welcome Section -->
     <div class="text-center mb-12">
       <h1 class="text-4xl sm:text-5xl font-serif font-bold text-primary mb-4">
