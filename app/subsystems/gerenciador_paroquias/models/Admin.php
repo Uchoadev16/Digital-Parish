@@ -321,7 +321,7 @@ class Admin extends SelectMain
                 unlink('../../../main/assets/foto_perfil/' . $dado['logo']);
 
             }
-            foreach ($$dados_users as $dado) {
+            foreach ($dados_users as $dado) {
                 $stmt_delete = $this->connection->query("DELETE FROM {$this->tables['prom']} WHERE fk_usuarios_id = '{$dado['id']}'");
             }
             $stmt_delete = $this->connection->query("DELETE FROM {$this->tables['comm']} WHERE fk_paroquias_id = '$id_paroquia'");
