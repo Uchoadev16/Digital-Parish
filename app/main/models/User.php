@@ -97,7 +97,7 @@ class User extends SelectMain
                     INNER JOIN  {$this->tables['type']} t ON t.id = p.fk_tipos_usuarios_id
                     INNER JOIN  {$this->tables['sys']} s ON s.id = p.fk_sistemas_id
                     INNER JOIN  {$this->tables['users']} u ON u.id = p.fk_usuarios_id
-                    INNER JOIN  {$this->tables['comm']} c ON c.id = p.fk_usuarios_id
+                    INNER JOIN  {$this->tables['comm']} c ON c.id = p.fk_comunidades_id
                     WHERE p.fk_usuarios_id = :id"
                     );
                     $stmt_permissoes->bindParam(':id', $user['id']);
