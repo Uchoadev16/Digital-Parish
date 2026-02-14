@@ -75,9 +75,9 @@ class User extends SelectMain
     }
     public function Login(string $email, string $senha): int
     {
-        try {
+        //try {
             $stmt_check = $this->connection->prepare(
-                "SELECT u.*, p.id AS id_paroquia, pe.id AS id_perfil FROM {$this->tables['users']} u
+                "SELECT u.*, u.id AS id_user, p.id AS id_paroquia, pe.id AS id_perfil FROM {$this->tables['users']} u
             INNER JOIN {$this->tables['pari']} p ON p.id = u.fk_paroquias_id
             INNER JOIN {$this->tables['prof']} pe ON pe.id = u.fk_perfis_id
             WHERE email = :email
@@ -97,15 +97,16 @@ class User extends SelectMain
                     INNER JOIN  {$this->tables['type']} t ON t.id = p.fk_tipos_usuarios_id
                     INNER JOIN  {$this->tables['sys']} s ON s.id = p.fk_sistemas_id
                     INNER JOIN  {$this->tables['users']} u ON u.id = p.fk_usuarios_id
-                    INNER JOIN  {$this->tables['comm']} c ON c.id = p.fk_usuarios_id
+                    INNER JOIN  {$this->tables['comm']} c ON c.id = p.fk_comunidades_id
                     WHERE p.fk_usuarios_id = :id"
                     );
-                    $stmt_permissoes->bindParam(':id', $user['id']);
+                    $stmt_permissoes->bindParam(':id', $user['id_user']);
                     if (!$stmt_permissoes->execute()) {
                         return 2;
                     }
 
                     $dados = $stmt_permissoes->fetchAll(PDO::FETCH_ASSOC);
+                    print_r($dados);
                     foreach ($dados as $dado) {
 
                         $_SESSION[$dado['tipos_usuarios']] = $dado['tipo_usuarios'];
@@ -128,9 +129,9 @@ class User extends SelectMain
             } else {
                 return 3;
             }
-        } catch (Exception $e) {
+        /*} catch (Exception $e) {
             return 0;
-        }
+        }*/
     }
 
     public function EsqueceuSenha(string $email): int
