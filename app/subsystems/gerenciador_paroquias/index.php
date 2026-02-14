@@ -78,10 +78,27 @@ $dados_paroquias = $select->selectParoquias();
       background: rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(4px);
     }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #e8c9a6;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 
 <body class="bg-warm-gray text-primary font-sans antialiased min-h-screen">
+  <div id="loading-backdrop" class="loading fixed flex justify-center items-center modal-backdrop w-screen h-screen hidden z-10">
+    <div class="spinner"></div>
+  </div>
 
   <main class="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
@@ -255,7 +272,6 @@ $dados_paroquias = $select->selectParoquias();
       
       const btnEnviarEmail = document.querySelector('#btn-enviar-email');
       function bloquearBtnEnviarEmail(event) {
-        console.log(event);
         const inputCodigo = document.querySelector('#codigo-exclusao')
         if (!inputCodigo.value) return
 
@@ -268,6 +284,26 @@ $dados_paroquias = $select->selectParoquias();
 
       var backdrop = document.getElementById('fecha-modal-backdrop');
       var btnCancelar = document.getElementById('btn-cancelar-excluir');
+      var btnsExcluir = document.querySelectorAll('.btn-excluir')
+
+      function toggleLoadingBackdrop(event) {
+        const loadingBackdrop = document.querySelector('#loading-backdrop')
+        
+        if (loadingBackdrop) {
+          loadingBackdrop.classList.toggle('hidden')
+        }
+
+        if (event) {
+          const btnClicado = event.target
+        }
+      }
+
+      if (btnsExcluir.length > 0) {
+        btnsExcluir.forEach(btn => {
+          
+          btn.addEventListener('click', toggleLoadingBackdrop)
+        });
+      }
 
       if (backdrop) {
         backdrop.addEventListener('click', fecharModal);
@@ -284,6 +320,7 @@ $dados_paroquias = $select->selectParoquias();
       if (urlParams.has('email_enviado') && modal) {
         modal.classList.remove('hidden');
         modal.setAttribute('aria-hidden', 'false');
+        // toggleLoadingBackdrop()
       }
     })();
   </script>
