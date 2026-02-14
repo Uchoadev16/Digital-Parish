@@ -209,7 +209,7 @@ $dados_paroquias = $select->selectParoquias();
             <button type="button" id="btn-cancelar-excluir" class="flex-1 py-3 rounded-xl border-2 border-gray-200 text-gray-700 font-semibold hover:bg-gray-50 transition-colors">
               Cancelar
             </button>
-            <button type="submit" class="flex-1 py-3 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700 transition-colors">
+            <button type="submit" id="btn-enviar-email" data-clicado="false" class="flex-1 py-3 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700 transition-colors disabled:opacity-80 disabled:cursor-not-allowed">
               Excluir paróquia
             </button>
           </div>
@@ -252,14 +252,31 @@ $dados_paroquias = $select->selectParoquias();
         modal.classList.add('hidden');
         modal.setAttribute('aria-hidden', 'true');
       }
+      
+      const btnEnviarEmail = document.querySelector('#btn-enviar-email');
+      function bloquearBtnEnviarEmail(event) {
+        console.log(event);
+        const inputCodigo = document.querySelector('#codigo-exclusao')
+        if (!inputCodigo.value) return
+
+        const btn = event.target
+        btn.innerHTML = "Carregando..."
+
+        const formEnviar = document.querySelector('#form-excluir')
+        formEnviar.submit()
+      }
 
       var backdrop = document.getElementById('fecha-modal-backdrop');
       var btnCancelar = document.getElementById('btn-cancelar-excluir');
+
       if (backdrop) {
         backdrop.addEventListener('click', fecharModal);
       }
       if (btnCancelar) {
         btnCancelar.addEventListener('click', fecharModal);
+      }
+      if (btnEnviarEmail) {
+        btnEnviarEmail.addEventListener('click', bloquearBtnEnviarEmail)
       }
 
       // Se o backend redirecionar com ?email_enviado, abrir o modal automaticamente
