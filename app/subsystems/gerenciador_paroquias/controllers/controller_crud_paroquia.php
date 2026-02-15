@@ -77,6 +77,9 @@ if (
         case 8:
             header('Location: ../views/cadastrar.php?arquivo_vazio');
             exit();
+        case 9:
+            header('Location: ../views/cadastrar.php?telefone_duplicado');
+            exit();
         default:
             header('Location: ../views/cadastrar.php?falha');
             exit;

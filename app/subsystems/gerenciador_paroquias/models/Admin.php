@@ -34,6 +34,7 @@ class Admin extends SelectMain
         string $paroco_cpf,
     ): int {
 
+        //verificar se já existe um cnpj cadastrado
         $stmt_check_pari = $this->connection->prepare("SELECT * FROM {$this->tables['pari']} WHERE cnpj = :cnpj");
         $stmt_check_pari->bindParam(':cnpj', $cnpj);
         if (!$stmt_check_pari->execute()) {
@@ -41,6 +42,16 @@ class Admin extends SelectMain
         }
         if ($stmt_check_pari->rowCount() > 0) {
             return 3;
+        }
+
+        //verificar se já existe um telefone cadastrado
+        $stmt_check_pari = $this->connection->prepare("SELECT * FROM {$this->tables['pari']} WHERE telefone = :telefone");
+        $stmt_check_pari->bindParam(':telefone', $telefone);
+        if (!$stmt_check_pari->execute()) {
+            return 2;
+        }
+        if ($stmt_check_pari->rowCount() > 0) {
+            return 9;
         }
 
         // Verificar se o arquivo foi enviado
@@ -64,6 +75,7 @@ class Admin extends SelectMain
             return 6;
         }
 
+        //cadastrar paroquia
         $sql = "INSERT INTO {$this->tables['pari']} VALUES (null, :nome_paroquia, :localizacao, :cnpj, :logo, :telefone)";
         $stmt_insert_pari = $this->connection->prepare($sql);
         $stmt_insert_pari->bindParam(':nome_paroquia', $nome_paroquia);
@@ -75,6 +87,7 @@ class Admin extends SelectMain
             return 2;
         }
 
+        //pegar id da paroquia cadastrada
         $stmt_by_id = $this->connection->prepare("SELECT * FROM {$this->tables['pari']} WHERE cnpj = :cnpj");
         $stmt_by_id->bindParam(':cnpj', $cnpj);
         if (!$stmt_by_id->execute()) {
@@ -103,9 +116,21 @@ class Admin extends SelectMain
             return 7;
         }
 
+        //cadastrar comunidade paroquial e pegar seu id
+        $stmt_insert_prof = $this->connection->query("INSERT INTO {$this->tables['comm']} VALUES (null, 'Paróquial', 'Geral', {$id_pari['id']})");
+        $stmt_id_comm = $this->connection->prepare("SELECT * FROM {$this->tables['comm']} WHERE nome_comunidade = :nome AND fk_paroquias_id = :id");
+        $stmt_id_comm->bindValue(':nome', 'Paróquial');
+        $stmt_id_comm->bindValue(':id', $id_pari['id']);
+        if (!$stmt_id_comm->execute()) {
+            return 2;
+        }
+        $id_comm = $stmt_id_comm->fetch(PDO::FETCH_ASSOC);
+
+        // cadastrar perfis
         $stmt_insert_prof = $this->connection->query("INSERT INTO {$this->tables['prof']} VALUES (null, 'SECRETÁRIO(A)', {$id_pari['id']})");
         $stmt_insert_prof = $this->connection->query("INSERT INTO {$this->tables['prof']} VALUES (null, 'PÁROCO', {$id_pari['id']})");
 
+        //pegar os IDs do perfil secretario e padre
         $stmt_id_prof_sec = $this->connection->prepare("SELECT * FROM {$this->tables['prof']} WHERE nome_perfil = :perfil AND fk_paroquias_id = :id");
         $stmt_id_prof_sec->bindValue(':id', $id_pari['id']);
         $stmt_id_prof_sec->bindValue(':perfil', 'SECRETÁRIO(A)');
@@ -113,7 +138,6 @@ class Admin extends SelectMain
             return 2;
         }
         $id_prof_sec = $stmt_id_prof_sec->fetch(PDO::FETCH_ASSOC);
-
         $stmt_id_prof_pad = $this->connection->prepare("SELECT * FROM {$this->tables['prof']} WHERE nome_perfil = :perfil AND fk_paroquias_id = :id");
         $stmt_id_prof_pad->bindParam(':id', $id_pari['id']);
         $stmt_id_prof_pad->bindValue(':perfil', 'PÁROCO');
@@ -122,6 +146,7 @@ class Admin extends SelectMain
         }
         $id_prof_pad = $stmt_id_prof_pad->fetch(PDO::FETCH_ASSOC);
 
+        //cadastrar o secretario e pegar seu id
         $sql = "INSERT INTO {$this->tables['users']} (nome_usuario, email, cpf, fk_perfis_id, fk_paroquias_id) VALUES (:nome_usuario, :email, :cpf, :fk_perfis_id, :fk_paroquias_id)";
         $stmt_insert_sec = $this->connection->prepare($sql);
         $stmt_insert_sec->bindParam(':nome_usuario', $secretario_nome);
@@ -132,7 +157,15 @@ class Admin extends SelectMain
         if (!$stmt_insert_sec->execute()) {
             return 2;
         }
+        $stmt_id_user_sec = $this->connection->prepare("SELECT * FROM {$this->tables['users']} WHERE fk_paroquias_id = :id_paroquias_id AND fk_perfis_id = :id_perfil");
+        $stmt_id_user_sec->bindValue(':id_paroquias_id', $id_pari['id']);
+        $stmt_id_user_sec->bindValue(':id_perfil', $id_prof_sec['id']);
+        if (!$stmt_id_user_sec->execute()) {
+            return 2;
+        }
+        $id_user_sec = $stmt_id_user_sec->fetch(PDO::FETCH_ASSOC);
 
+        //cadastrar padre e pegar seu id
         $sql = "INSERT INTO {$this->tables['users']} (nome_usuario, email, cpf, fk_perfis_id, fk_paroquias_id) VALUES (:nome_usuario, :email, :cpf, :fk_perfis_id, :fk_paroquias_id)";
         $stmt_insert_pad = $this->connection->prepare($sql);
         $stmt_insert_pad->bindParam(':nome_usuario', $paroco_nome);
@@ -141,6 +174,31 @@ class Admin extends SelectMain
         $stmt_insert_pad->bindParam(':fk_perfis_id', $id_prof_pad['id']);
         $stmt_insert_pad->bindParam(':fk_paroquias_id', $id_pari['id']);
         if (!$stmt_insert_pad->execute()) {
+            return 2;
+        }
+        $stmt_id_user_pad = $this->connection->prepare("SELECT * FROM {$this->tables['users']} WHERE fk_paroquias_id = :id_paroquias_id AND fk_perfis_id = :id_perfil");
+        $stmt_id_user_pad->bindValue(':id_paroquias_id', $id_pari['id']);
+        $stmt_id_user_pad->bindValue(':id_perfil', $id_prof_pad['id']);
+        if (!$stmt_id_user_pad->execute()) {
+            return 2;
+        }
+        $id_user_pad = $stmt_id_user_pad->fetch(PDO::FETCH_ASSOC);
+
+        //criar permissão para o secretario 
+        $sql = "INSERT INTO {$this->tables['perm']} VALUES (null, 2, 2, :id_usuario, :id_comunidade)";
+        $stmt_insert_perm_sec = $this->connection->prepare($sql);
+        $stmt_insert_perm_sec->bindParam(':id_usuario', $id_user_sec['id']);
+        $stmt_insert_perm_sec->bindParam(':id_comunidade', $id_comm['id']);
+        if (!$stmt_insert_perm_sec->execute()) {
+            return 2;
+        }
+
+        //criar permissão para o padre 
+        $sql = "INSERT INTO {$this->tables['perm']} VALUES (null, 2, 2, :id_usuario, :id_comunidade)";
+        $stmt_insert_perm_pad = $this->connection->prepare($sql);
+        $stmt_insert_perm_pad->bindParam(':id_usuario', $id_user_pad['id']);
+        $stmt_insert_perm_pad->bindParam(':id_comunidade', $id_comm['id']);
+        if (!$stmt_insert_perm_pad->execute()) {
             return 2;
         }
 
